@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "school",
+            "otherEntityName": "school",
+            "otherEntityField": "schoolName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "userPhone",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userDob",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "userBloodGroup",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "activate",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180526120440",
+    "entityTableName": "user_profile",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch"
+}

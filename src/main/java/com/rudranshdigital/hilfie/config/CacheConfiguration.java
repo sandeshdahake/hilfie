@@ -38,6 +38,11 @@ public class CacheConfiguration {
             cm.createCache(com.rudranshdigital.hilfie.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.School.class.getName(), jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.School.class.getName() + ".classNames", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.School.class.getName() + ".ids", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName(), jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.UserProfile.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

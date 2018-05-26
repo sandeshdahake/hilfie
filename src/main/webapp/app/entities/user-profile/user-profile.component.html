@@ -1,0 +1,94 @@
+<div>
+    <h2>
+        <span>User Profiles</span>
+        <button class="btn btn-primary float-right jh-create-entity create-user-profile" [routerLink]="['/', { outlets: { popup: ['user-profile-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down" >
+            Create new User Profile
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="userProfiles">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userPhone"><span>User Phone</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userDob"><span>User Dob</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userBloodGroup"><span>User Blood Group</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userImage"><span>User Image</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activate"><span>Activate</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.id"><span>User</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="school.schoolName"><span>School</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let userProfile of userProfiles ;trackBy: trackId">
+                <td><a [routerLink]="['../user-profile', userProfile.id ]">{{userProfile.id}}</a></td>
+                <td>{{userProfile.userPhone}}</td>
+                <td>{{userProfile.userDob | date:'mediumDate'}}</td>
+                <td>{{userProfile.userBloodGroup}}</td>
+                <td>
+                    <a *ngIf="userProfile.userImage" (click)="openFile(userProfile.userImageContentType, userProfile.userImage)">
+                        <img [src]="'data:' + userProfile.userImageContentType + ';base64,' + userProfile.userImage" style="max-height: 30px;" alt="userProfile image"/>
+                    </a>
+                    <span *ngIf="userProfile.userImage">{{userProfile.userImageContentType}}, {{byteSize(userProfile.userImage)}}</span>
+                </td>
+                <td>{{userProfile.activate}}</td>
+                <td>
+                    {{userProfile.user?.id}}
+                </td>
+                <td>
+                    <div *ngIf="userProfile.school">
+                        <a [routerLink]="['../school', userProfile.school?.id ]" >{{userProfile.school?.schoolName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../user-profile', userProfile.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'user-profile/'+ userProfile.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'user-profile/'+ userProfile.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

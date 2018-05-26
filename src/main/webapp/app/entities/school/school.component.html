@@ -1,0 +1,83 @@
+<div>
+    <h2>
+        <span>Schools</span>
+        <button class="btn btn-primary float-right jh-create-entity create-school" [routerLink]="['/', { outlets: { popup: ['school-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down" >
+            Create new School
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="schools">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="schoolName"><span>School Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="schoolAddress"><span>School Address</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="schoolPhone"><span>School Phone</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="schoolFax"><span>School Fax</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="startDate"><span>Start Date</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="endDate"><span>End Date</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activate"><span>Activate</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let school of schools ;trackBy: trackId">
+                <td><a [routerLink]="['../school', school.id ]">{{school.id}}</a></td>
+                <td>{{school.schoolName}}</td>
+                <td>{{school.schoolAddress}}</td>
+                <td>{{school.schoolPhone}}</td>
+                <td>{{school.schoolFax}}</td>
+                <td>{{school.startDate | date:'mediumDate'}}</td>
+                <td>{{school.endDate | date:'mediumDate'}}</td>
+                <td>{{school.activate}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../school', school.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'school/'+ school.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'school/'+ school.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

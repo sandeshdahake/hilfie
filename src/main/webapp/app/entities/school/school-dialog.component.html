@@ -1,0 +1,112 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySchoolLabel">Create or edit a School</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!school.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="school.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_schoolName">School Name</label>
+            <input type="text" class="form-control" name="schoolName" id="field_schoolName"
+                [(ngModel)]="school.schoolName" required/>
+            <div [hidden]="!(editForm.controls.schoolName?.dirty && editForm.controls.schoolName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.schoolName?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_schoolAddress">School Address</label>
+            <textarea class="form-control" name="schoolAddress" id="field_schoolAddress"
+                [(ngModel)]="school.schoolAddress" required></textarea>
+            <div [hidden]="!(editForm.controls.schoolAddress?.dirty && editForm.controls.schoolAddress?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.schoolAddress?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_schoolPhone">School Phone</label>
+            <input type="text" class="form-control" name="schoolPhone" id="field_schoolPhone"
+                [(ngModel)]="school.schoolPhone" required/>
+            <div [hidden]="!(editForm.controls.schoolPhone?.dirty && editForm.controls.schoolPhone?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.schoolPhone?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_schoolFax">School Fax</label>
+            <input type="text" class="form-control" name="schoolFax" id="field_schoolFax"
+                [(ngModel)]="school.schoolFax" required/>
+            <div [hidden]="!(editForm.controls.schoolFax?.dirty && editForm.controls.schoolFax?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.schoolFax?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_startDate">Start Date</label>
+            <div class="input-group">
+                <input id="field_startDate" type="text" class="form-control" name="startDate" ngbDatepicker  #startDateDp="ngbDatepicker" [(ngModel)]="school.startDate"
+                required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="startDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.startDate?.dirty && editForm.controls.startDate?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.startDate?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_endDate">End Date</label>
+            <div class="input-group">
+                <input id="field_endDate" type="text" class="form-control" name="endDate" ngbDatepicker  #endDateDp="ngbDatepicker" [(ngModel)]="school.endDate"
+                required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.endDate?.dirty && editForm.controls.endDate?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.endDate?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_activate">Activate</label>
+            <input type="checkbox" class="form-control" name="activate" id="field_activate"
+                [(ngModel)]="school.activate" />
+            <div [hidden]="!(editForm.controls.activate?.dirty && editForm.controls.activate?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.activate?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,36 @@
+entity School{
+     schoolName String required,
+     schoolAddress TextBlob required,
+     schoolPhone String required,
+     schoolFax String required,
+     startDate LocalDate required,
+     endDate LocalDate required,
+     activate Boolean required
+}
+
+entity Classroom{
+     className String required,
+     description String
+}
+
+entity UserProfile{
+   userPhone String,
+   userDob LocalDate,
+   userBloodGroup String,
+   userImage ImageBlob,
+   activate Boolean required
+}
+relationship ManyToOne {
+	Classroom{schoolName(schoolName) required} to School{className}
+}
+
+relationship OneToOne {
+	UserProfile{User(id) required} to User{id}
+}
+relationship ManyToOne {
+	UserProfile{School(schoolName) required} to School{id}
+}
+
+service * with serviceClass
+paginate * with infinite-scroll
+search * with elasticsearch

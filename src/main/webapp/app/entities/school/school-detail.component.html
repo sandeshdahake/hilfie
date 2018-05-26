@@ -1,0 +1,50 @@
+
+<div *ngIf="school">
+    <h2><span>School</span> {{school.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>School Name</span></dt>
+        <dd>
+            <span>{{school.schoolName}}</span>
+        </dd>
+        <dt><span>School Address</span></dt>
+        <dd>
+            <span>{{school.schoolAddress}}</span>
+        </dd>
+        <dt><span>School Phone</span></dt>
+        <dd>
+            <span>{{school.schoolPhone}}</span>
+        </dd>
+        <dt><span>School Fax</span></dt>
+        <dd>
+            <span>{{school.schoolFax}}</span>
+        </dd>
+        <dt><span>Start Date</span></dt>
+        <dd>
+            <span>{{school.startDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>End Date</span></dt>
+        <dd>
+            <span>{{school.endDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Activate</span></dt>
+        <dd>
+            <span>{{school.activate}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'school/'+ school.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
