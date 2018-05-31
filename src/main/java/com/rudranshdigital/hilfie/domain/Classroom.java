@@ -1,5 +1,6 @@
 package com.rudranshdigital.hilfie.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -35,6 +38,16 @@ public class Classroom implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private School schoolName;
+
+    @OneToMany(mappedBy = "classroom")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Questions> questions = new HashSet<>();
+
+    @OneToMany(mappedBy = "classroom")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Answers> answers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -82,6 +95,56 @@ public class Classroom implements Serializable {
 
     public void setSchoolName(School school) {
         this.schoolName = school;
+    }
+
+    public Set<Questions> getQuestions() {
+        return questions;
+    }
+
+    public Classroom questions(Set<Questions> questions) {
+        this.questions = questions;
+        return this;
+    }
+
+    public Classroom addQuestion(Questions questions) {
+        this.questions.add(questions);
+        questions.setClassroom(this);
+        return this;
+    }
+
+    public Classroom removeQuestion(Questions questions) {
+        this.questions.remove(questions);
+        questions.setClassroom(null);
+        return this;
+    }
+
+    public void setQuestions(Set<Questions> questions) {
+        this.questions = questions;
+    }
+
+    public Set<Answers> getAnswers() {
+        return answers;
+    }
+
+    public Classroom answers(Set<Answers> answers) {
+        this.answers = answers;
+        return this;
+    }
+
+    public Classroom addAnswer(Answers answers) {
+        this.answers.add(answers);
+        answers.setClassroom(this);
+        return this;
+    }
+
+    public Classroom removeAnswer(Answers answers) {
+        this.answers.remove(answers);
+        answers.setClassroom(null);
+        return this;
+    }
+
+    public void setAnswers(Set<Answers> answers) {
+        this.answers = answers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

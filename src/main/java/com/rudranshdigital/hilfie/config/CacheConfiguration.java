@@ -43,6 +43,11 @@ public class CacheConfiguration {
             cm.createCache(com.rudranshdigital.hilfie.domain.School.class.getName() + ".ids", jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName(), jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.UserProfile.class.getName(), jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Questions.class.getName(), jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Questions.class.getName() + ".answers", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Answers.class.getName(), jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName() + ".questions", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName() + ".answers", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

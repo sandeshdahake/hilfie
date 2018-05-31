@@ -1,0 +1,58 @@
+
+<div *ngIf="answers">
+    <h2><span>Answers</span> {{answers.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Answer</span></dt>
+        <dd>
+            <span>{{answers.answer}}</span>
+        </dd>
+        <dt><span>Date Created</span></dt>
+        <dd>
+            <span>{{answers.dateCreated | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Date Updated</span></dt>
+        <dd>
+            <span>{{answers.dateUpdated | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Is Anonymous</span></dt>
+        <dd>
+            <span>{{answers.isAnonymous}}</span>
+        </dd>
+        <dt><span>Active</span></dt>
+        <dd>
+            <span>{{answers.active}}</span>
+        </dd>
+        <dt><span>User</span></dt>
+        <dd>
+            {{answers.user?.login}}
+        </dd>
+        <dt><span>Classroom</span></dt>
+        <dd>
+            <div *ngIf="answers.classroom">
+                <a [routerLink]="['/classroom', answers.classroom?.id]">{{answers.classroom?.className}}</a>
+            </div>
+        </dd>
+        <dt><span>Questions</span></dt>
+        <dd>
+            <div *ngIf="answers.questions">
+                <a [routerLink]="['/questions', answers.questions?.id]">{{answers.questions?.question}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'answers/'+ answers.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

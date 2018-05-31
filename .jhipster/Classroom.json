@@ -7,6 +7,18 @@
             "relationshipName": "schoolName",
             "otherEntityName": "school",
             "otherEntityField": "schoolName"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "question",
+            "otherEntityName": "questions",
+            "otherEntityRelationshipName": "classroom"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "answer",
+            "otherEntityName": "answers",
+            "otherEntityRelationshipName": "classroom"
         }
     ],
     "fields": [

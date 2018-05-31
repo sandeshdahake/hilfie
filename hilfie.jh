@@ -20,6 +20,24 @@ entity UserProfile{
    userImage ImageBlob,
    activate Boolean required
 }
+
+entity Questions {
+question TextBlob required,
+dateCreated LocalDate required,
+dateUpdated LocalDate required,
+isAnonymous Boolean ,
+answerCount Integer,
+active Boolean required
+}
+
+entity Answers {
+answer TextBlob required,
+dateCreated LocalDate required,
+dateUpdated LocalDate required,
+isAnonymous Boolean required,
+active Boolean
+}
+
 relationship ManyToOne {
 	Classroom{schoolName(schoolName) required} to School{className}
 }
@@ -31,6 +49,25 @@ relationship ManyToOne {
 	UserProfile{School(schoolName) required} to School{id}
 }
 
+relationship ManyToOne {
+	Questions{User(login) required} to User{login}
+}
+
+relationship ManyToOne {
+	Questions{Classroom(className) required} to Classroom{question}
+}
+
+relationship ManyToOne {
+	Answers{User(login) required} to User{login}
+}
+
+relationship ManyToOne {
+	Answers{Classroom(className) required} to Classroom{answer}
+}
+
+relationship ManyToOne {
+	Answers{Questions(question) required} to Questions{answer}
+}
 service * with serviceClass
 paginate * with infinite-scroll
 search * with elasticsearch

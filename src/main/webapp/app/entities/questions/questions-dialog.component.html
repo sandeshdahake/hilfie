@@ -1,0 +1,121 @@
+
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myQuestionsLabel">Create or edit a Questions</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!questions.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="questions.id" readonly />
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_question">Question</label>-->
+            <!--<textarea class="form-control" name="question" id="field_question"-->
+                <!--[(ngModel)]="questions.question" required></textarea>-->
+            <!--<div [hidden]="!(editForm.controls.question?.dirty && editForm.controls.question?.invalid)">-->
+                <!--<small class="form-text text-danger"-->
+                   <!--[hidden]="!editForm.controls.question?.errors?.required">-->
+                   <!--This field is required.-->
+                <!--</small>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="form-control-label" for="field_question">Question</label>
+            <p-editor  name="question" id="field_question" (onInit)="editorCreated($event)"
+                       [(ngModel)]="questions.question"  [style]="{'height':'320px'}" required></p-editor>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_dateCreated">Date Created</label>
+            <div class="input-group">
+                <input id="field_dateCreated" type="text" class="form-control" name="dateCreated" ngbDatepicker  #dateCreatedDp="ngbDatepicker" [(ngModel)]="questions.dateCreated"
+                required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateCreatedDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.dateCreated?.dirty && editForm.controls.dateCreated?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dateCreated?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_dateUpdated">Date Updated</label>
+            <div class="input-group">
+                <input id="field_dateUpdated" type="text" class="form-control" name="dateUpdated" ngbDatepicker  #dateUpdatedDp="ngbDatepicker" [(ngModel)]="questions.dateUpdated"
+                required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateUpdatedDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.dateUpdated?.dirty && editForm.controls.dateUpdated?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dateUpdated?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_isAnonymous">Is Anonymous</label>
+            <input type="checkbox" class="form-control" name="isAnonymous" id="field_isAnonymous"
+                [(ngModel)]="questions.isAnonymous" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_answerCount">Answer Count</label>
+            <input type="number" class="form-control" name="answerCount" id="field_answerCount"
+                [(ngModel)]="questions.answerCount" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_active">Active</label>
+            <input type="checkbox" class="form-control" name="active" id="field_active"
+                [(ngModel)]="questions.active" />
+            <div [hidden]="!(editForm.controls.active?.dirty && editForm.controls.active?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.active?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="questions.user"  required>
+                <option *ngIf="!editForm.value.user" [ngValue]="null" selected></option>
+                <option [ngValue]="userOption.id === questions.user?.id ? questions.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.user?.errors?.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_classroom">Classroom</label>
+            <select class="form-control" id="field_classroom" name="classroom" [(ngModel)]="questions.classroom"  required>
+                <option *ngIf="!editForm.value.classroom" [ngValue]="null" selected></option>
+                <option [ngValue]="classroomOption.id === questions.classroom?.id ? questions.classroom : classroomOption" *ngFor="let classroomOption of classrooms; trackBy: trackClassroomById">{{classroomOption.className}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.classroom?.dirty && editForm.controls.classroom?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.classroom?.errors?.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

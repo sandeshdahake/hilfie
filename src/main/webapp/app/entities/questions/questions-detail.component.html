@@ -1,0 +1,56 @@
+
+<div *ngIf="questions">
+    <h2><span>Questions</span> {{questions.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Question</span></dt>
+        <dd>
+            <span>{{questions.question}}</span>
+        </dd>
+        <dt><span>Date Created</span></dt>
+        <dd>
+            <span>{{questions.dateCreated | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Date Updated</span></dt>
+        <dd>
+            <span>{{questions.dateUpdated | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Is Anonymous</span></dt>
+        <dd>
+            <span>{{questions.isAnonymous}}</span>
+        </dd>
+        <dt><span>Answer Count</span></dt>
+        <dd>
+            <span>{{questions.answerCount}}</span>
+        </dd>
+        <dt><span>Active</span></dt>
+        <dd>
+            <span>{{questions.active}}</span>
+        </dd>
+        <dt><span>User</span></dt>
+        <dd>
+            {{questions.user?.login}}
+        </dd>
+        <dt><span>Classroom</span></dt>
+        <dd>
+            <div *ngIf="questions.classroom">
+                <a [routerLink]="['/classroom', questions.classroom?.id]">{{questions.classroom?.className}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'questions/'+ questions.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
