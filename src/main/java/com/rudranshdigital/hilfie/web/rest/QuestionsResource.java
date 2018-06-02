@@ -1,5 +1,7 @@
 package com.rudranshdigital.hilfie.web.rest;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.codahale.metrics.annotation.Timed;
 import com.rudranshdigital.hilfie.domain.Questions;
 import com.rudranshdigital.hilfie.service.QuestionsService;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -39,6 +43,18 @@ public class QuestionsResource {
     private static final String ENTITY_NAME = "questions";
 
     private final QuestionsService questionsService;
+
+/*
+    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+        "cloud_name", "sandeshdahake",
+        "api_key", "864573788265325",
+        "api_secret", "LhNNz1wV8YcLY9OrO5adlU3We4E"));
+*/
+
+    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+        "cloud_name", "",
+        "api_key", "",
+        "api_secret", ""));
 
     public QuestionsResource(QuestionsService questionsService) {
         this.questionsService = questionsService;
@@ -149,8 +165,10 @@ public class QuestionsResource {
 
     @PostMapping(value = "/questions/imageUpload",produces = { "text/plain" })
     @Timed
-    public ResponseEntity<String> createQuestions(@RequestParam("file") MultipartFile file) throws URISyntaxException {
+    public ResponseEntity<String> createQuestions(@RequestParam("file") MultipartFile file) throws URISyntaxException, IOException {
         log.debug("REST request to save file : {}", file);
-        return ResponseEntity.ok().body("https://cloudinary-res.cloudinary.com/image/asset/dpr_2.0/logo-e0df892053afd966cc0bfe047ba93ca4.png");
+        Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        String imageUrl = (String)uploadResult.get("url");
+        return ResponseEntity.ok().body(imageUrl);
     }
 }
