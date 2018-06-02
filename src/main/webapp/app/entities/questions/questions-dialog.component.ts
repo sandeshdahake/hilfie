@@ -4,6 +4,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { Cloudinary } from '@cloudinary/angular-5.x';
 
 import { Questions } from './questions.model';
 import { QuestionsPopupService } from './questions-popup.service';
@@ -20,6 +21,7 @@ export class QuestionsDialogComponent implements OnInit {
     isSaving: boolean;
     editor: any;
     users: User[];
+    returnedURL:any;
 
     classrooms: Classroom[];
     dateCreatedDp: any;
@@ -85,12 +87,15 @@ export class QuestionsDialogComponent implements OnInit {
 
       Imageinput.addEventListener('change', () =>  {
         const file = Imageinput.files[0];
-    /*    if (Imageinput.files != null && Imageinput.files[0] != null) {
-            this._service.sendFileToServer(file).subscribe(res => {
-            this._returnedURL = res;
+
+        //alert(file);
+        if (Imageinput.files != null && Imageinput.files[0] != null) {
+            this.questionsService.sendFileToServer(file).subscribe((url: String) => {
+            alert(url);
+            this.returnedURL = url;
             this.pushImageToEditor();
             });
-        }*/
+        }
     });
 
       Imageinput.click();
@@ -99,7 +104,7 @@ export class QuestionsDialogComponent implements OnInit {
     pushImageToEditor() {
       const range = this.editor.getSelection(true);
       const index = range.index + range.length;
-     /* this.editor.insertEmbed(range.index, 'image', this._returnedURL); */
+      this.editor.insertEmbed(range.index, 'image', this.returnedURL);
     }
     private subscribeToSaveResponse(result: Observable<HttpResponse<Questions>>) {
         result.subscribe((res: HttpResponse<Questions>) =>

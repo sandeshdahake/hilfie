@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -145,4 +146,11 @@ public class QuestionsResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    @PostMapping(value = "/questions/imageUpload",produces = { "text/plain" })
+    @Timed
+    public ResponseEntity<String> createQuestions(@RequestParam("file") MultipartFile file) throws URISyntaxException {
+        log.debug("REST request to save file : {}", file);
+        return ResponseEntity.ok().body("https://cloudinary-res.cloudinary.com/image/asset/dpr_2.0/logo-e0df892053afd966cc0bfe047ba93ca4.png");
+    }
 }
