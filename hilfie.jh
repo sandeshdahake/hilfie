@@ -22,7 +22,8 @@ entity UserProfile{
 }
 
 entity Questions {
-question TextBlob required,
+question_label String required,
+question TextBlob,
 dateCreated LocalDate required,
 dateUpdated LocalDate required,
 isAnonymous Boolean ,

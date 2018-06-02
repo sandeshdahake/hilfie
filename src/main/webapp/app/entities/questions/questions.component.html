@@ -30,6 +30,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="questionlabel"><span>Questionlabel</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="question"><span>Question</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="dateCreated"><span>Date Created</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="dateUpdated"><span>Date Updated</span> <span class="fa fa-sort"></span></th>
@@ -44,6 +45,7 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let questions of questions ;trackBy: trackId">
                 <td><a [routerLink]="['../questions', questions.id ]">{{questions.id}}</a></td>
+                <td>{{questions.questionlabel}}</td>
                 <td>{{questions.question}}</td>
                 <td>{{questions.dateCreated | date:'mediumDate'}}</td>
                 <td>{{questions.dateUpdated | date:'mediumDate'}}</td>

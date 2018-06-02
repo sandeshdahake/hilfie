@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
@@ -9,17 +9,12 @@ import { Questions } from './questions.model';
 import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<Questions>;
-export type EntityResponseStringType = HttpResponse<String>;
 
 @Injectable()
 export class QuestionsService {
 
     private resourceUrl =  SERVER_API_URL + 'api/questions';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questions';
-    private cloudName = 'sandeshdahake';
-    private unsignedUploadPreset = 'ucappsk7';
-
-    private imageUploadUrl ='https://api.cloudinary.com/v1_1/${cloudName}/upload';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -27,18 +22,6 @@ export class QuestionsService {
         const copy = this.convert(questions);
         return this.http.post<Questions>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    sendFileToServer(file:File):Observable<String>{
-         const copy = this.convertToObject(file);
-         const httpOptions = {
-           headers: new HttpHeaders({
-             'responseType':  'text'
-
-           })}
-        return this.http.post(this.resourceUrl+'/imageUpload', copy, {responseType: 'text'})
-        //.map((res: EntityResponseStringType) => res.body)
-
     }
 
     update(questions: Questions): Observable<EntityResponseType> {
@@ -106,10 +89,14 @@ export class QuestionsService {
         return copy;
     }
 
-    private convertToObject(file:File):FormData{
-    let formData: FormData = new FormData();
-    formData.append('file', file);
+    sendFileToServer(file: String): Observable<String> {
+         const copy = this.convertToObject(file);
+        return this.http.post(this.resourceUrl+'/imageUpload', copy, {responseType: 'text'});
+    }
 
-            return formData;
+    private convertToObject(file: File): FormData{
+        let formData: FormData = new FormData();
+        formData.append('file', file);
+        return formData;
     }
 }

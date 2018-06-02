@@ -3,6 +3,7 @@ import { BaseEntity, User } from './../../shared';
 export class Questions implements BaseEntity {
     constructor(
         public id?: number,
+        public questionlabel?: string,
         public question?: any,
         public dateCreated?: any,
         public dateUpdated?: any,

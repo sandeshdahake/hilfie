@@ -3,6 +3,7 @@ package com.rudranshdigital.hilfie.web.rest;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.codahale.metrics.annotation.Timed;
+import com.rudranshdigital.hilfie.config.ApplicationProperties;
 import com.rudranshdigital.hilfie.domain.Questions;
 import com.rudranshdigital.hilfie.service.QuestionsService;
 import com.rudranshdigital.hilfie.web.rest.errors.BadRequestAlertException;
@@ -11,6 +12,8 @@ import com.rudranshdigital.hilfie.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -20,10 +23,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,8 +50,10 @@ public class QuestionsResource {
     private static final String ENTITY_NAME = "questions";
 
     private final QuestionsService questionsService;
+    @Autowired
+    ApplicationProperties applicationProperties;
 
-/*
+    /*
     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
         "cloud_name", "sandeshdahake",
         "api_key", "864573788265325",
@@ -52,9 +61,11 @@ public class QuestionsResource {
 */
 
     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-        "cloud_name", "",
-        "api_key", "",
-        "api_secret", ""));
+        "cloud_name", "sandeshdahake",
+        "api_key", "864573788265325",
+        "api_secret", "LhNNz1wV8YcLY9OrO5adlU3We4E"));
+
+    String uploadPath = "C:\\Work\\Hilfie\\images\\";
 
     public QuestionsResource(QuestionsService questionsService) {
         this.questionsService = questionsService;
@@ -162,13 +173,19 @@ public class QuestionsResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-
     @PostMapping(value = "/questions/imageUpload",produces = { "text/plain" })
     @Timed
-    public ResponseEntity<String> createQuestions(@RequestParam("file") MultipartFile file) throws URISyntaxException, IOException {
-        log.debug("REST request to save file : {}", file);
-        Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws URISyntaxException, IOException {
+         Path rootLocation = Paths.get(applicationProperties.getImageUploadPath());
+
+        log.debug("REST request to upload image : {}", file);
+        String fileName = Math.random()+ file.getOriginalFilename();
+        Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
+        Map uploadResult = cloudinary.uploader().upload(new File(applicationProperties.getImageUploadPath()+fileName), ObjectUtils.emptyMap());
+       // Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+
         String imageUrl = (String)uploadResult.get("url");
         return ResponseEntity.ok().body(imageUrl);
     }
+
 }

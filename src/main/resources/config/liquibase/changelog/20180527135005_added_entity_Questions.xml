@@ -22,8 +22,12 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="question" type="clob">
+            <column name="questionlabel" type="varchar(255)">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="question" type="clob">
+                <constraints nullable="true" />
             </column>
 
             <column name="date_created" type="date">

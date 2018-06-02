@@ -24,12 +24,16 @@
     ],
     "fields": [
         {
-            "fieldName": "question",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text",
+            "fieldName": "questionlabel",
+            "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "question",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "dateCreated",

@@ -3,8 +3,10 @@ import { RouterModule } from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from 'primeng/editor';
+
 import { HilfieSharedModule } from '../../shared';
 import { HilfieAdminModule } from '../../admin/admin.module';
+
 import {
     QuestionsService,
     QuestionsPopupService,
@@ -27,10 +29,10 @@ const ENTITY_STATES = [
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        EditorModule,
         HilfieSharedModule,
         HilfieAdminModule,
-        RouterModule.forChild(ENTITY_STATES)
+        RouterModule.forChild(ENTITY_STATES),
+        EditorModule
     ],
     declarations: [
         QuestionsComponent,

@@ -30,8 +30,11 @@ public class Questions implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "questionlabel", nullable = false)
+    private String questionlabel;
+
     @Lob
-    @Column(name = "question", nullable = false)
+    @Column(name = "question")
     private String question;
 
     @NotNull
@@ -72,6 +75,19 @@ public class Questions implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getQuestionlabel() {
+        return questionlabel;
+    }
+
+    public Questions questionlabel(String questionlabel) {
+        this.questionlabel = questionlabel;
+        return this;
+    }
+
+    public void setQuestionlabel(String questionlabel) {
+        this.questionlabel = questionlabel;
     }
 
     public String getQuestion() {
@@ -228,6 +244,7 @@ public class Questions implements Serializable {
     public String toString() {
         return "Questions{" +
             "id=" + getId() +
+            ", questionlabel='" + getQuestionlabel() + "'" +
             ", question='" + getQuestion() + "'" +
             ", dateCreated='" + getDateCreated() + "'" +
             ", dateUpdated='" + getDateUpdated() + "'" +

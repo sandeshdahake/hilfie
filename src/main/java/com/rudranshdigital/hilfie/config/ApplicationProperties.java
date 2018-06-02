@@ -1,6 +1,7 @@
 package com.rudranshdigital.hilfie.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Properties specific to Hilfie.
@@ -8,7 +9,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Properties are configured in the application.yml file.
  * See {@link io.github.jhipster.config.JHipsterProperties} for a good example.
  */
-@ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
+@Component
+@ConfigurationProperties("application")
 public class ApplicationProperties {
+    public String getImageUploadPath() {
+        return imageUploadPath;
+    }
+
+    public void setImageUploadPath(String imageUploadPath) {
+        this.imageUploadPath = imageUploadPath;
+    }
+
+    private String imageUploadPath;
 
 }

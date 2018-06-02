@@ -1,4 +1,3 @@
-
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
@@ -13,21 +12,21 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="questions.id" readonly />
         </div>
-        <!--<div class="form-group">-->
-            <!--<label class="form-control-label" for="field_question">Question</label>-->
-            <!--<textarea class="form-control" name="question" id="field_question"-->
-                <!--[(ngModel)]="questions.question" required></textarea>-->
-            <!--<div [hidden]="!(editForm.controls.question?.dirty && editForm.controls.question?.invalid)">-->
-                <!--<small class="form-text text-danger"-->
-                   <!--[hidden]="!editForm.controls.question?.errors?.required">-->
-                   <!--This field is required.-->
-                <!--</small>-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="form-group">
-            <label class="form-control-label" for="field_question">Question</label>
+            <label class="form-control-label" for="field_questionlabel">Question</label>
+            <input type="text" class="form-control" name="questionlabel" id="field_questionlabel"
+                [(ngModel)]="questions.questionlabel" required/>
+            <div [hidden]="!(editForm.controls.questionlabel?.dirty && editForm.controls.questionlabel?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.questionlabel?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Question Details</label>
             <p-editor  name="question" id="field_question" (onInit)="editorCreated($event)"
-                       [(ngModel)]="questions.question"  [style]="{'height':'320px'}" required></p-editor>
+                       [(ngModel)]="questions.question"  [style]="{'height':'320px'}" ></p-editor>
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_dateCreated">Date Created</label>

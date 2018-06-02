@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
-import { Cloudinary } from '@cloudinary/angular-5.x';
 
 import { Questions } from './questions.model';
 import { QuestionsPopupService } from './questions-popup.service';
@@ -17,15 +17,18 @@ import { Classroom, ClassroomService } from '../classroom';
     templateUrl: './questions-dialog.component.html'
 })
 export class QuestionsDialogComponent implements OnInit {
+
     questions: Questions;
     isSaving: boolean;
-    editor: any;
+
     users: User[];
-    returnedURL:any;
 
     classrooms: Classroom[];
     dateCreatedDp: any;
     dateUpdatedDp: any;
+
+    editor: any;
+    returnedURL: any;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -73,39 +76,6 @@ export class QuestionsDialogComponent implements OnInit {
         }
     }
 
-     editorCreated(event) {
-        const toolbar = event.editor.getModule('toolbar');
-        toolbar.addHandler('image', this.imageHandler.bind(this));
-        this.editor = event.editor;
-    }
-
-    imageHandler() {
-      const Imageinput = document.createElement('input');
-      Imageinput.setAttribute('type', 'file');
-      Imageinput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-      Imageinput.classList.add('ql-image');
-
-      Imageinput.addEventListener('change', () =>  {
-        const file = Imageinput.files[0];
-
-        //alert(file);
-        if (Imageinput.files != null && Imageinput.files[0] != null) {
-            this.questionsService.sendFileToServer(file).subscribe((url: String) => {
-            alert(url);
-            this.returnedURL = url;
-            this.pushImageToEditor();
-            });
-        }
-    });
-
-      Imageinput.click();
-    }
-
-    pushImageToEditor() {
-      const range = this.editor.getSelection(true);
-      const index = range.index + range.length;
-      this.editor.insertEmbed(range.index, 'image', this.returnedURL);
-    }
     private subscribeToSaveResponse(result: Observable<HttpResponse<Questions>>) {
         result.subscribe((res: HttpResponse<Questions>) =>
             this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
@@ -132,6 +102,39 @@ export class QuestionsDialogComponent implements OnInit {
     trackClassroomById(index: number, item: Classroom) {
         return item.id;
     }
+
+     editorCreated(event) {
+        const toolbar = event.editor.getModule('toolbar');
+        toolbar.addHandler('image', this.imageHandler.bind(this));
+        this.editor = event.editor;
+    }
+
+    imageHandler() {
+      const Imageinput = document.createElement('input');
+      Imageinput.setAttribute('type', 'file');
+      Imageinput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+      Imageinput.classList.add('ql-image');
+
+      Imageinput.addEventListener('change', () =>  {
+        const file = Imageinput.files[0];
+        if (Imageinput.files != null && Imageinput.files[0] != null) {
+            this.questionsService.sendFileToServer(file).subscribe((url: String) => {
+            alert(url);
+            this.returnedURL = url;
+            this.pushImageToEditor();
+            });
+        }
+    });
+
+      Imageinput.click();
+    }
+
+    pushImageToEditor() {
+      const range = this.editor.getSelection(true);
+      const index = range.index + range.length;
+      this.editor.insertEmbed(range.index, 'image', this.returnedURL);
+    }
+
 }
 
 @Component({

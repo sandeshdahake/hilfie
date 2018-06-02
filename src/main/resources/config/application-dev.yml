@@ -68,7 +68,6 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
-
 liquibase:
     contexts: dev
 
@@ -154,3 +153,4 @@ jhipster:
 # ===================================================================
 
 application:
+    imageUploadPath: C:\Work\Hilfie\images\

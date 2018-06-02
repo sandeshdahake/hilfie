@@ -45,6 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HilfieApp.class)
 public class QuestionsResourceIntTest {
 
+    private static final String DEFAULT_QUESTIONLABEL = "AAAAAAAAAA";
+    private static final String UPDATED_QUESTIONLABEL = "BBBBBBBBBB";
+
     private static final String DEFAULT_QUESTION = "AAAAAAAAAA";
     private static final String UPDATED_QUESTION = "BBBBBBBBBB";
 
@@ -107,6 +110,7 @@ public class QuestionsResourceIntTest {
      */
     public static Questions createEntity(EntityManager em) {
         Questions questions = new Questions()
+            .questionlabel(DEFAULT_QUESTIONLABEL)
             .question(DEFAULT_QUESTION)
             .dateCreated(DEFAULT_DATE_CREATED)
             .dateUpdated(DEFAULT_DATE_UPDATED)
@@ -147,6 +151,7 @@ public class QuestionsResourceIntTest {
         List<Questions> questionsList = questionsRepository.findAll();
         assertThat(questionsList).hasSize(databaseSizeBeforeCreate + 1);
         Questions testQuestions = questionsList.get(questionsList.size() - 1);
+        assertThat(testQuestions.getQuestionlabel()).isEqualTo(DEFAULT_QUESTIONLABEL);
         assertThat(testQuestions.getQuestion()).isEqualTo(DEFAULT_QUESTION);
         assertThat(testQuestions.getDateCreated()).isEqualTo(DEFAULT_DATE_CREATED);
         assertThat(testQuestions.getDateUpdated()).isEqualTo(DEFAULT_DATE_UPDATED);
@@ -180,10 +185,10 @@ public class QuestionsResourceIntTest {
 
     @Test
     @Transactional
-    public void checkQuestionIsRequired() throws Exception {
+    public void checkQuestionlabelIsRequired() throws Exception {
         int databaseSizeBeforeTest = questionsRepository.findAll().size();
         // set the field null
-        questions.setQuestion(null);
+        questions.setQuestionlabel(null);
 
         // Create the Questions, which fails.
 
@@ -261,6 +266,7 @@ public class QuestionsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questions.getId().intValue())))
+            .andExpect(jsonPath("$.[*].questionlabel").value(hasItem(DEFAULT_QUESTIONLABEL.toString())))
             .andExpect(jsonPath("$.[*].question").value(hasItem(DEFAULT_QUESTION.toString())))
             .andExpect(jsonPath("$.[*].dateCreated").value(hasItem(DEFAULT_DATE_CREATED.toString())))
             .andExpect(jsonPath("$.[*].dateUpdated").value(hasItem(DEFAULT_DATE_UPDATED.toString())))
@@ -280,6 +286,7 @@ public class QuestionsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(questions.getId().intValue()))
+            .andExpect(jsonPath("$.questionlabel").value(DEFAULT_QUESTIONLABEL.toString()))
             .andExpect(jsonPath("$.question").value(DEFAULT_QUESTION.toString()))
             .andExpect(jsonPath("$.dateCreated").value(DEFAULT_DATE_CREATED.toString()))
             .andExpect(jsonPath("$.dateUpdated").value(DEFAULT_DATE_UPDATED.toString()))
@@ -309,6 +316,7 @@ public class QuestionsResourceIntTest {
         // Disconnect from session so that the updates on updatedQuestions are not directly saved in db
         em.detach(updatedQuestions);
         updatedQuestions
+            .questionlabel(UPDATED_QUESTIONLABEL)
             .question(UPDATED_QUESTION)
             .dateCreated(UPDATED_DATE_CREATED)
             .dateUpdated(UPDATED_DATE_UPDATED)
@@ -325,6 +333,7 @@ public class QuestionsResourceIntTest {
         List<Questions> questionsList = questionsRepository.findAll();
         assertThat(questionsList).hasSize(databaseSizeBeforeUpdate);
         Questions testQuestions = questionsList.get(questionsList.size() - 1);
+        assertThat(testQuestions.getQuestionlabel()).isEqualTo(UPDATED_QUESTIONLABEL);
         assertThat(testQuestions.getQuestion()).isEqualTo(UPDATED_QUESTION);
         assertThat(testQuestions.getDateCreated()).isEqualTo(UPDATED_DATE_CREATED);
         assertThat(testQuestions.getDateUpdated()).isEqualTo(UPDATED_DATE_UPDATED);
@@ -388,6 +397,7 @@ public class QuestionsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questions.getId().intValue())))
+            .andExpect(jsonPath("$.[*].questionlabel").value(hasItem(DEFAULT_QUESTIONLABEL.toString())))
             .andExpect(jsonPath("$.[*].question").value(hasItem(DEFAULT_QUESTION.toString())))
             .andExpect(jsonPath("$.[*].dateCreated").value(hasItem(DEFAULT_DATE_CREATED.toString())))
             .andExpect(jsonPath("$.[*].dateUpdated").value(hasItem(DEFAULT_DATE_UPDATED.toString())))

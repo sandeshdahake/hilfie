@@ -106,3 +106,4 @@ jhipster:
 # ===================================================================
 
 application:
+    imageUploadPath: C:\Work\Hilfie\images\
