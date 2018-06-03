@@ -89,7 +89,7 @@ export class QuestionsService {
         return copy;
     }
 
-    sendFileToServer(file: String): Observable<String> {
+    sendFileToServer(file: File): Observable<String> {
          const copy = this.convertToObject(file);
         return this.http.post(this.resourceUrl+'/imageUpload', copy, {responseType: 'text'});
     }

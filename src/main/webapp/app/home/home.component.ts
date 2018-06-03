@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+alert(this.account.login);
     }
 
     registerAuthenticationSuccess() {

@@ -107,6 +107,7 @@ export class QuestionsDialogComponent implements OnInit {
         const toolbar = event.editor.getModule('toolbar');
         toolbar.addHandler('image', this.imageHandler.bind(this));
         this.editor = event.editor;
+        this.editor.addContainer('ql-video');
     }
 
     imageHandler() {
@@ -119,7 +120,6 @@ export class QuestionsDialogComponent implements OnInit {
         const file = Imageinput.files[0];
         if (Imageinput.files != null && Imageinput.files[0] != null) {
             this.questionsService.sendFileToServer(file).subscribe((url: String) => {
-            alert(url);
             this.returnedURL = url;
             this.pushImageToEditor();
             });

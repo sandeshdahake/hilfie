@@ -5,7 +5,10 @@ import com.cloudinary.utils.ObjectUtils;
 import com.codahale.metrics.annotation.Timed;
 import com.rudranshdigital.hilfie.config.ApplicationProperties;
 import com.rudranshdigital.hilfie.domain.Questions;
+import com.rudranshdigital.hilfie.domain.User;
+import com.rudranshdigital.hilfie.service.ClassroomService;
 import com.rudranshdigital.hilfie.service.QuestionsService;
+import com.rudranshdigital.hilfie.service.UserService;
 import com.rudranshdigital.hilfie.web.rest.errors.BadRequestAlertException;
 import com.rudranshdigital.hilfie.web.rest.util.HeaderUtil;
 import com.rudranshdigital.hilfie.web.rest.util.PaginationUtil;
@@ -50,6 +53,8 @@ public class QuestionsResource {
     private static final String ENTITY_NAME = "questions";
 
     private final QuestionsService questionsService;
+    private final UserService userService;
+    private final ClassroomService classroomService;
     @Autowired
     ApplicationProperties applicationProperties;
 
@@ -67,8 +72,10 @@ public class QuestionsResource {
 
     String uploadPath = "C:\\Work\\Hilfie\\images\\";
 
-    public QuestionsResource(QuestionsService questionsService) {
+    public QuestionsResource(QuestionsService questionsService, UserService userService, ClassroomService classroomService) {
         this.questionsService = questionsService;
+        this.userService = userService;
+        this.classroomService = classroomService;
     }
 
     /**
@@ -80,11 +87,17 @@ public class QuestionsResource {
      */
     @PostMapping("/questions")
     @Timed
-    public ResponseEntity<Questions> createQuestions(@Valid @RequestBody Questions questions) throws URISyntaxException {
+    public ResponseEntity<Questions> createQuestions(@RequestBody Questions questions) throws URISyntaxException {
         log.debug("REST request to save Questions : {}", questions);
         if (questions.getId() != null) {
             throw new BadRequestAlertException("A new questions cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User user = userService.getUserWithAuthorities().get();
+
+/*
+        questions.setUser();
+        questions.setClassroom();
+*/
         Questions result = questionsService.save(questions);
         return ResponseEntity.created(new URI("/api/questions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -179,7 +192,7 @@ public class QuestionsResource {
          Path rootLocation = Paths.get(applicationProperties.getImageUploadPath());
 
         log.debug("REST request to upload image : {}", file);
-        String fileName = Math.random()+ file.getOriginalFilename();
+        String fileName = Math.random()+ file.getName();
         Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
         Map uploadResult = cloudinary.uploader().upload(new File(applicationProperties.getImageUploadPath()+fileName), ObjectUtils.emptyMap());
        // Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
