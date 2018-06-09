@@ -10,6 +10,12 @@
         },
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "id",
+            "otherEntityName": "userProfile",
+            "otherEntityRelationshipName": "classroom"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "question",
             "otherEntityName": "questions",
             "otherEntityRelationshipName": "classroom"

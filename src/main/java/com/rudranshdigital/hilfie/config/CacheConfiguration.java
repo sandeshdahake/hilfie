@@ -48,6 +48,7 @@ public class CacheConfiguration {
             cm.createCache(com.rudranshdigital.hilfie.domain.Answers.class.getName(), jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName() + ".questions", jcacheConfiguration);
             cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName() + ".answers", jcacheConfiguration);
+            cm.createCache(com.rudranshdigital.hilfie.domain.Classroom.class.getName() + ".ids", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

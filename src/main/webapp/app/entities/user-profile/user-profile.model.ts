@@ -11,6 +11,7 @@ export class UserProfile implements BaseEntity {
         public activate?: boolean,
         public user?: User,
         public school?: BaseEntity,
+        public classroom?: BaseEntity,
     ) {
         this.activate = false;
     }

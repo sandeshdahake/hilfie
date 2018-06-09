@@ -49,6 +49,9 @@ relationship OneToOne {
 relationship ManyToOne {
 	UserProfile{School(schoolName) required} to School{id}
 }
+relationship ManyToOne {
+	UserProfile{Classroom(className) required} to Classroom{id}
+}
 
 relationship ManyToOne {
 	Questions{User(login) required} to User{login}

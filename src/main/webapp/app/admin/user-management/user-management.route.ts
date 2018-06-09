@@ -7,8 +7,11 @@ import { UserMgmtComponent } from './user-management.component';
 import { UserMgmtDetailComponent } from './user-management-detail.component';
 import { UserDialogComponent } from './user-management-dialog.component';
 import { UserDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { UserProfilePopupComponent } from '../../entities/user-profile/user-profile-dialog.component';
+
 
 import { Principal } from '../../shared';
+import { UserRouteAccessService } from '../../shared';
 
 @Injectable()
 export class UserResolve implements CanActivate {
@@ -70,6 +73,39 @@ export const userDialogRoute: Routes = [
     {
         path: 'user-management/:login/delete',
         component: UserDeleteDialogComponent,
+        outlet: 'popup'
+    },
+    {
+        path: 'user-profile-new',
+        component: UserProfilePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'UserProfiles'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
+];
+
+export const userProfilePopupRoute: Routes = [
+    {
+        path: 'user-profile-new',
+        component: UserProfilePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'UserProfiles'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'user-profile/:id/edit',
+        component: UserProfilePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'UserProfiles'
+        },
+        canActivate: [UserRouteAccessService],
         outlet: 'popup'
     }
 ];

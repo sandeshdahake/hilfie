@@ -55,6 +55,10 @@ public class UserProfile implements Serializable {
     @NotNull
     private School school;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    private Classroom classroom;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -166,6 +170,19 @@ public class UserProfile implements Serializable {
 
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public UserProfile classroom(Classroom classroom) {
+        this.classroom = classroom;
+        return this;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

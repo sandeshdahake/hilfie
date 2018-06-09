@@ -44,7 +44,7 @@ const ENTITY_STATES = [
     ],
     providers: [
         UserProfileService,
-        UserProfilePopupService,
+        UserProfilePopupService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

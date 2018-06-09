@@ -42,6 +42,11 @@ public class Classroom implements Serializable {
     @OneToMany(mappedBy = "classroom")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<UserProfile> ids = new HashSet<>();
+
+    @OneToMany(mappedBy = "classroom")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Questions> questions = new HashSet<>();
 
     @OneToMany(mappedBy = "classroom")
@@ -95,6 +100,31 @@ public class Classroom implements Serializable {
 
     public void setSchoolName(School school) {
         this.schoolName = school;
+    }
+
+    public Set<UserProfile> getIds() {
+        return ids;
+    }
+
+    public Classroom ids(Set<UserProfile> userProfiles) {
+        this.ids = userProfiles;
+        return this;
+    }
+
+    public Classroom addId(UserProfile userProfile) {
+        this.ids.add(userProfile);
+        userProfile.setClassroom(this);
+        return this;
+    }
+
+    public Classroom removeId(UserProfile userProfile) {
+        this.ids.remove(userProfile);
+        userProfile.setClassroom(null);
+        return this;
+    }
+
+    public void setIds(Set<UserProfile> userProfiles) {
+        this.ids = userProfiles;
     }
 
     public Set<Questions> getQuestions() {

@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="school"/>
 
+        <addForeignKeyConstraint baseColumnNames="classroom_id"
+                                 baseTableName="user_profile"
+                                 constraintName="fk_user_profile_classroom_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="classroom"/>
+
     </changeSet>
 </databaseChangeLog>

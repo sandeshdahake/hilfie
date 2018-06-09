@@ -39,6 +39,12 @@
                 <a [routerLink]="['/school', userProfile.school?.id]">{{userProfile.school?.schoolName}}</a>
             </div>
         </dd>
+        <dt><span>Classroom</span></dt>
+        <dd>
+            <div *ngIf="userProfile.classroom">
+                <a [routerLink]="['/classroom', userProfile.classroom?.id]">{{userProfile.classroom?.className}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

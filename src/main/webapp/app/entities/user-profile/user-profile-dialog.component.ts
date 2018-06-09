@@ -11,6 +11,7 @@ import { UserProfilePopupService } from './user-profile-popup.service';
 import { UserProfileService } from './user-profile.service';
 import { User, UserService } from '../../shared';
 import { School, SchoolService } from '../school';
+import { Classroom, ClassroomService } from '../classroom';
 
 @Component({
     selector: 'jhi-user-profile-dialog',
@@ -24,6 +25,8 @@ export class UserProfileDialogComponent implements OnInit {
     users: User[];
 
     schools: School[];
+
+    classrooms: Classroom[];
     userDobDp: any;
 
     constructor(
@@ -33,6 +36,7 @@ export class UserProfileDialogComponent implements OnInit {
         private userProfileService: UserProfileService,
         private userService: UserService,
         private schoolService: SchoolService,
+        private classroomService: ClassroomService,
         private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
@@ -44,6 +48,8 @@ export class UserProfileDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.schoolService.query()
             .subscribe((res: HttpResponse<School[]>) => { this.schools = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.classroomService.query()
+            .subscribe((res: HttpResponse<Classroom[]>) => { this.classrooms = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -101,6 +107,10 @@ export class UserProfileDialogComponent implements OnInit {
     }
 
     trackSchoolById(index: number, item: School) {
+        return item.id;
+    }
+
+    trackClassroomById(index: number, item: Classroom) {
         return item.id;
     }
 }

@@ -6,8 +6,10 @@ import com.rudranshdigital.hilfie.domain.Questions;
 import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.domain.Classroom;
 import com.rudranshdigital.hilfie.repository.QuestionsRepository;
+import com.rudranshdigital.hilfie.service.ClassroomService;
 import com.rudranshdigital.hilfie.service.QuestionsService;
 import com.rudranshdigital.hilfie.repository.search.QuestionsSearchRepository;
+import com.rudranshdigital.hilfie.service.UserService;
 import com.rudranshdigital.hilfie.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -71,6 +73,10 @@ public class QuestionsResourceIntTest {
 
     @Autowired
     private QuestionsService questionsService;
+    @Autowired
+    private  UserService userService;
+    @Autowired
+    private  ClassroomService classroomService;
 
     @Autowired
     private QuestionsSearchRepository questionsSearchRepository;
@@ -94,7 +100,7 @@ public class QuestionsResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final QuestionsResource questionsResource = new QuestionsResource(questionsService);
+        final QuestionsResource questionsResource = new QuestionsResource(questionsService,userService,classroomService );
         this.restQuestionsMockMvc = MockMvcBuilders.standaloneSetup(questionsResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

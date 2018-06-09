@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {Router} from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
@@ -17,11 +18,11 @@ export class UserMgmtDialogComponent implements OnInit {
     languages: any[];
     authorities: any[];
     isSaving: Boolean;
-
+     route: any;
     constructor(
         public activeModal: NgbActiveModal,
         private userService: UserService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
     ) {}
 
     ngOnInit() {
@@ -30,6 +31,7 @@ export class UserMgmtDialogComponent implements OnInit {
         this.userService.authorities().subscribe((authorities) => {
             this.authorities = authorities;
         });
+        this.route = Router;
     }
 
     clear() {
@@ -50,6 +52,7 @@ export class UserMgmtDialogComponent implements OnInit {
         this.eventManager.broadcast({ name: 'userListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result.body);
+        this.route.navigate(['./user-management-new'])
     }
 
     private onSaveError() {

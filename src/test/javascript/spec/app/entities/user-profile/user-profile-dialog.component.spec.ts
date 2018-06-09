@@ -11,6 +11,7 @@ import { UserProfileService } from '../../../../../../main/webapp/app/entities/u
 import { UserProfile } from '../../../../../../main/webapp/app/entities/user-profile/user-profile.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
 import { SchoolService } from '../../../../../../main/webapp/app/entities/school';
+import { ClassroomService } from '../../../../../../main/webapp/app/entities/classroom';
 
 describe('Component Tests', () => {
 
@@ -28,6 +29,7 @@ describe('Component Tests', () => {
                 providers: [
                     UserService,
                     SchoolService,
+                    ClassroomService,
                     UserProfileService
                 ]
             })

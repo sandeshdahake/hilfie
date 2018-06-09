@@ -5,6 +5,7 @@ import com.rudranshdigital.hilfie.HilfieApp;
 import com.rudranshdigital.hilfie.domain.UserProfile;
 import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.domain.School;
+import com.rudranshdigital.hilfie.domain.Classroom;
 import com.rudranshdigital.hilfie.repository.UserProfileRepository;
 import com.rudranshdigital.hilfie.service.UserProfileService;
 import com.rudranshdigital.hilfie.repository.search.UserProfileSearchRepository;
@@ -122,6 +123,11 @@ public class UserProfileResourceIntTest {
         em.persist(school);
         em.flush();
         userProfile.setSchool(school);
+        // Add required entity
+        Classroom classroom = ClassroomResourceIntTest.createEntity(em);
+        em.persist(classroom);
+        em.flush();
+        userProfile.setClassroom(classroom);
         return userProfile;
     }
 

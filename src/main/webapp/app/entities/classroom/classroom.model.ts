@@ -6,6 +6,7 @@ export class Classroom implements BaseEntity {
         public className?: string,
         public description?: string,
         public schoolName?: BaseEntity,
+        public ids?: BaseEntity[],
         public questions?: BaseEntity[],
         public answers?: BaseEntity[],
     ) {

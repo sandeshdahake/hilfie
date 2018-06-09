@@ -16,6 +16,13 @@
             "relationshipName": "school",
             "otherEntityName": "school",
             "otherEntityField": "schoolName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "classroom",
+            "otherEntityName": "classroom",
+            "otherEntityField": "className"
         }
     ],
     "fields": [
