@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
-
+import { JhiEventManager } from 'ng-jhipster';
 import { UserProfile } from './user-profile.model';
 import { UserProfileService } from './user-profile.service';
 
@@ -19,7 +18,6 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private eventManager: JhiEventManager,
-        private dataUtils: JhiDataUtils,
         private userProfileService: UserProfileService,
         private route: ActivatedRoute
     ) {
@@ -37,13 +35,6 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
             .subscribe((userProfileResponse: HttpResponse<UserProfile>) => {
                 this.userProfile = userProfileResponse.body;
             });
-    }
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
-
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();

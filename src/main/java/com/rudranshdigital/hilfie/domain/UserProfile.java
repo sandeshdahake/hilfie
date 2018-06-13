@@ -35,12 +35,8 @@ public class UserProfile implements Serializable {
     @Column(name = "user_blood_group")
     private String userBloodGroup;
 
-    @Lob
     @Column(name = "user_image")
-    private byte[] userImage;
-
-    @Column(name = "user_image_content_type")
-    private String userImageContentType;
+    private String userImage;
 
     @NotNull
     @Column(name = "jhi_activate", nullable = false)
@@ -55,8 +51,7 @@ public class UserProfile implements Serializable {
     @NotNull
     private School school;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     private Classroom classroom;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -107,30 +102,17 @@ public class UserProfile implements Serializable {
         this.userBloodGroup = userBloodGroup;
     }
 
-    public byte[] getUserImage() {
+    public String getUserImage() {
         return userImage;
     }
 
-    public UserProfile userImage(byte[] userImage) {
+    public UserProfile userImage(String userImage) {
         this.userImage = userImage;
         return this;
     }
 
-    public void setUserImage(byte[] userImage) {
+    public void setUserImage(String userImage) {
         this.userImage = userImage;
-    }
-
-    public String getUserImageContentType() {
-        return userImageContentType;
-    }
-
-    public UserProfile userImageContentType(String userImageContentType) {
-        this.userImageContentType = userImageContentType;
-        return this;
-    }
-
-    public void setUserImageContentType(String userImageContentType) {
-        this.userImageContentType = userImageContentType;
     }
 
     public Boolean isActivate() {
@@ -214,7 +196,6 @@ public class UserProfile implements Serializable {
             ", userDob='" + getUserDob() + "'" +
             ", userBloodGroup='" + getUserBloodGroup() + "'" +
             ", userImage='" + getUserImage() + "'" +
-            ", userImageContentType='" + getUserImageContentType() + "'" +
             ", activate='" + isActivate() + "'" +
             "}";
     }

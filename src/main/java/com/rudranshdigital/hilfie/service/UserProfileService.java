@@ -92,6 +92,4 @@ public class UserProfileService {
         Page<UserProfile> result = userProfileSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
-
-
 }

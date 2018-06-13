@@ -50,8 +50,18 @@ export class UserProfileService {
         return this.http.get<UserProfile[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<UserProfile[]>) => this.convertArrayResponse(res));
     }
+    
+    sendFileToServer(file: File): Observable<String> {
+        const copy = this.convertToObject(file);
+       return this.http.post(this.resourceUrl+'/imageUpload', copy, {responseType: 'text'});
+   }
+   private convertToObject(file: File): FormData{
+    let formData: FormData = new FormData();
+    formData.append('file', file);
+    return formData;
+   }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
+   private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: UserProfile = this.convertItemFromServer(res.body);
         return res.clone({body});
     }

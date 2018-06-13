@@ -17,7 +17,7 @@ entity UserProfile{
    userPhone String,
    userDob LocalDate,
    userBloodGroup String,
-   userImage ImageBlob,
+   userImage String,
    activate Boolean required
 }
 
@@ -44,13 +44,13 @@ relationship ManyToOne {
 }
 
 relationship OneToOne {
-	UserProfile{User(id) required} to User{id}
+	UserProfile{User(login) required} to User{id}
 }
 relationship ManyToOne {
 	UserProfile{School(schoolName) required} to School{id}
 }
 relationship ManyToOne {
-	UserProfile{Classroom(className) required} to Classroom{id}
+	UserProfile{Classroom(className)} to Classroom{id}
 }
 
 relationship ManyToOne {

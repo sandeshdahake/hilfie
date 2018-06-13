@@ -7,10 +7,53 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!userProfile.id">
+        <!-- <div class="form-group" [hidden]="!userProfile.id">
             <label for="id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="userProfile.id" readonly />
+        </div> -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" *jhiHasAnyAuthority="['ROLE_ADMIN']"
+                [(ngModel)]="userProfile.user"  required>
+                <option *ngIf="!editForm.value.user" [ngValue]="null" selected></option>
+                <option [ngValue]="userOption.id === userProfile.user?.id ? userProfile.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+            <!--"'ROLE_ADMIN','ROLE_STUDENT','ROLE_USER','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PRINCIPAL','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE'" -->
+            <input type="text" class="form-control"
+             *jhiHasAnyAuthority="['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PRINCIPAL','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE']"
+            value="{{userProfile.user?.login}}" readonly />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_school">School</label>
+            <select class="form-control" id="field_school" name="school" *jhiHasAnyAuthority="['ROLE_ADMIN']"
+            [(ngModel)]="userProfile.school"  required>
+                <option *ngIf="!editForm.value.school" [ngValue]="null" selected></option>
+                <option [ngValue]="schoolOption.id === userProfile.school?.id ? userProfile.school : schoolOption" *ngFor="let schoolOption of schools; trackBy: trackSchoolById">{{schoolOption.schoolName}}</option>
+            </select>
+            <input type="text" class="form-control"
+             *jhiHasAnyAuthority="['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PRINCIPAL','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE']"
+            value="{{userProfile.school?.schoolName}}" readonly />
+
+        </div>
+        <div [hidden]="!(editForm.controls.school?.dirty && editForm.controls.school?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.school?.errors?.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_classroom">Classroom</label>
+            <select class="form-control" id="field_classroom" name="classroom" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_INCHARGE','ROLE_PRINCIPAL']"
+             [(ngModel)]="userProfile.classroom" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="classroomOption.id === userProfile.classroom?.id ? userProfile.classroom : classroomOption" *ngFor="let classroomOption of classrooms; trackBy: trackClassroomById">{{classroomOption.className}}</option>
+            </select>
+            <input type="text" class="form-control"
+            *jhiHasAnyAuthority="['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE']"
+           value="{{userProfile.classroom?.className}}" readonly />
+
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_userPhone">User Phone</label>
@@ -33,21 +76,12 @@
                 [(ngModel)]="userProfile.userBloodGroup" />
         </div>
         <div class="form-group">
+            <p-fileUpload id="imgUpload" name="demo[]" customUpload="true" (uploadHandler)="profileHandler($event)"
+                 accept="image/*" maxFileSize="1000000" (onUpload)="imgUpload.clear()">      
+            </p-fileUpload>
             <label class="form-control-label" for="field_userImage">User Image</label>
-            <div>
-                <img [src]="'data:' + userProfile.userImageContentType + ';base64,' + userProfile.userImage" style="max-height: 100px;" *ngIf="userProfile.userImage" alt="userProfile image"/>
-                <div *ngIf="userProfile.userImage" class="form-text text-danger clearfix">
-                    <span class="pull-left">{{userProfile.userImageContentType}}, {{byteSize(userProfile.userImage)}}</span>
-                    <button type="button" (click)="clearInputImage('userImage', 'userImageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
-                        <span class="fa fa-times"></span>
-                    </button>
-                </div>
-                <input type="file" id="file_userImage" (change)="setFileData($event, userProfile, 'userImage', true)" accept="image/*"/>
-            </div>
-            <input type="hidden" class="form-control" name="userImage" id="field_userImage"
-                [(ngModel)]="userProfile.userImage" />
-            <input type="hidden" class="form-control" name="userImageContentType" id="field_userImageContentType"
-                [(ngModel)]="userProfile.userImageContentType" />
+            <img  class="form-control" name="userImage" id="field_userImage"
+                src="{{userProfile.userImage}}" />
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_activate">Activate</label>
@@ -61,42 +95,9 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="form-control-label" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" [(ngModel)]="userProfile.user"  required>
-                <option *ngIf="!editForm.value.user" [ngValue]="null" selected></option>
-                <option [ngValue]="userOption.id === userProfile.user?.id ? userProfile.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
-            </select>
-        </div>
         <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">
             <small class="form-text text-danger"
                 [hidden]="!editForm.controls.user?.errors?.required">
-                This field is required.
-            </small>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_school">School</label>
-            <select class="form-control" id="field_school" name="school" [(ngModel)]="userProfile.school"  required>
-                <option *ngIf="!editForm.value.school" [ngValue]="null" selected></option>
-                <option [ngValue]="schoolOption.id === userProfile.school?.id ? userProfile.school : schoolOption" *ngFor="let schoolOption of schools; trackBy: trackSchoolById">{{schoolOption.schoolName}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.school?.dirty && editForm.controls.school?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.school?.errors?.required">
-                This field is required.
-            </small>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_classroom">Classroom</label>
-            <select class="form-control" id="field_classroom" name="classroom" [(ngModel)]="userProfile.classroom"  required>
-                <option *ngIf="!editForm.value.classroom" [ngValue]="null" selected></option>
-                <option [ngValue]="classroomOption.id === userProfile.classroom?.id ? userProfile.classroom : classroomOption" *ngFor="let classroomOption of classrooms; trackBy: trackClassroomById">{{classroomOption.className}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.classroom?.dirty && editForm.controls.classroom?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.classroom?.errors?.required">
                 This field is required.
             </small>
         </div>

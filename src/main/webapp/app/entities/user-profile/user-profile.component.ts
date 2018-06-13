@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { UserProfile } from './user-profile.model';
 import { UserProfileService } from './user-profile.service';
@@ -29,7 +29,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     constructor(
         private userProfileService: UserProfileService,
         private jhiAlertService: JhiAlertService,
-        private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
         private activatedRoute: ActivatedRoute,
@@ -121,14 +120,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     trackId(index: number, item: UserProfile) {
         return item.id;
-    }
-
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
-
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
     }
     registerChangeInUserProfiles() {
         this.eventSubscriber = this.eventManager.subscribe('userProfileListModification', (response) => this.reset());

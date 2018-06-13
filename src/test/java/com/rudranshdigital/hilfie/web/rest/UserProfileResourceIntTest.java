@@ -5,7 +5,6 @@ import com.rudranshdigital.hilfie.HilfieApp;
 import com.rudranshdigital.hilfie.domain.UserProfile;
 import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.domain.School;
-import com.rudranshdigital.hilfie.domain.Classroom;
 import com.rudranshdigital.hilfie.repository.UserProfileRepository;
 import com.rudranshdigital.hilfie.service.UserProfileService;
 import com.rudranshdigital.hilfie.repository.search.UserProfileSearchRepository;
@@ -24,7 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -55,10 +53,8 @@ public class UserProfileResourceIntTest {
     private static final String DEFAULT_USER_BLOOD_GROUP = "AAAAAAAAAA";
     private static final String UPDATED_USER_BLOOD_GROUP = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_USER_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_USER_IMAGE = TestUtil.createByteArray(2, "1");
-    private static final String DEFAULT_USER_IMAGE_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_USER_IMAGE_CONTENT_TYPE = "image/png";
+    private static final String DEFAULT_USER_IMAGE = "AAAAAAAAAA";
+    private static final String UPDATED_USER_IMAGE = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_ACTIVATE = false;
     private static final Boolean UPDATED_ACTIVATE = true;
@@ -111,7 +107,6 @@ public class UserProfileResourceIntTest {
             .userDob(DEFAULT_USER_DOB)
             .userBloodGroup(DEFAULT_USER_BLOOD_GROUP)
             .userImage(DEFAULT_USER_IMAGE)
-            .userImageContentType(DEFAULT_USER_IMAGE_CONTENT_TYPE)
             .activate(DEFAULT_ACTIVATE);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
@@ -123,11 +118,6 @@ public class UserProfileResourceIntTest {
         em.persist(school);
         em.flush();
         userProfile.setSchool(school);
-        // Add required entity
-        Classroom classroom = ClassroomResourceIntTest.createEntity(em);
-        em.persist(classroom);
-        em.flush();
-        userProfile.setClassroom(classroom);
         return userProfile;
     }
 
@@ -156,7 +146,6 @@ public class UserProfileResourceIntTest {
         assertThat(testUserProfile.getUserDob()).isEqualTo(DEFAULT_USER_DOB);
         assertThat(testUserProfile.getUserBloodGroup()).isEqualTo(DEFAULT_USER_BLOOD_GROUP);
         assertThat(testUserProfile.getUserImage()).isEqualTo(DEFAULT_USER_IMAGE);
-        assertThat(testUserProfile.getUserImageContentType()).isEqualTo(DEFAULT_USER_IMAGE_CONTENT_TYPE);
         assertThat(testUserProfile.isActivate()).isEqualTo(DEFAULT_ACTIVATE);
 
         // Validate the UserProfile in Elasticsearch
@@ -215,8 +204,7 @@ public class UserProfileResourceIntTest {
             .andExpect(jsonPath("$.[*].userPhone").value(hasItem(DEFAULT_USER_PHONE.toString())))
             .andExpect(jsonPath("$.[*].userDob").value(hasItem(DEFAULT_USER_DOB.toString())))
             .andExpect(jsonPath("$.[*].userBloodGroup").value(hasItem(DEFAULT_USER_BLOOD_GROUP.toString())))
-            .andExpect(jsonPath("$.[*].userImageContentType").value(hasItem(DEFAULT_USER_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].userImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_USER_IMAGE))))
+            .andExpect(jsonPath("$.[*].userImage").value(hasItem(DEFAULT_USER_IMAGE.toString())))
             .andExpect(jsonPath("$.[*].activate").value(hasItem(DEFAULT_ACTIVATE.booleanValue())));
     }
 
@@ -234,8 +222,7 @@ public class UserProfileResourceIntTest {
             .andExpect(jsonPath("$.userPhone").value(DEFAULT_USER_PHONE.toString()))
             .andExpect(jsonPath("$.userDob").value(DEFAULT_USER_DOB.toString()))
             .andExpect(jsonPath("$.userBloodGroup").value(DEFAULT_USER_BLOOD_GROUP.toString()))
-            .andExpect(jsonPath("$.userImageContentType").value(DEFAULT_USER_IMAGE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.userImage").value(Base64Utils.encodeToString(DEFAULT_USER_IMAGE)))
+            .andExpect(jsonPath("$.userImage").value(DEFAULT_USER_IMAGE.toString()))
             .andExpect(jsonPath("$.activate").value(DEFAULT_ACTIVATE.booleanValue()));
     }
 
@@ -264,7 +251,6 @@ public class UserProfileResourceIntTest {
             .userDob(UPDATED_USER_DOB)
             .userBloodGroup(UPDATED_USER_BLOOD_GROUP)
             .userImage(UPDATED_USER_IMAGE)
-            .userImageContentType(UPDATED_USER_IMAGE_CONTENT_TYPE)
             .activate(UPDATED_ACTIVATE);
 
         restUserProfileMockMvc.perform(put("/api/user-profiles")
@@ -280,7 +266,6 @@ public class UserProfileResourceIntTest {
         assertThat(testUserProfile.getUserDob()).isEqualTo(UPDATED_USER_DOB);
         assertThat(testUserProfile.getUserBloodGroup()).isEqualTo(UPDATED_USER_BLOOD_GROUP);
         assertThat(testUserProfile.getUserImage()).isEqualTo(UPDATED_USER_IMAGE);
-        assertThat(testUserProfile.getUserImageContentType()).isEqualTo(UPDATED_USER_IMAGE_CONTENT_TYPE);
         assertThat(testUserProfile.isActivate()).isEqualTo(UPDATED_ACTIVATE);
 
         // Validate the UserProfile in Elasticsearch
@@ -342,8 +327,7 @@ public class UserProfileResourceIntTest {
             .andExpect(jsonPath("$.[*].userPhone").value(hasItem(DEFAULT_USER_PHONE.toString())))
             .andExpect(jsonPath("$.[*].userDob").value(hasItem(DEFAULT_USER_DOB.toString())))
             .andExpect(jsonPath("$.[*].userBloodGroup").value(hasItem(DEFAULT_USER_BLOOD_GROUP.toString())))
-            .andExpect(jsonPath("$.[*].userImageContentType").value(hasItem(DEFAULT_USER_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].userImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_USER_IMAGE))))
+            .andExpect(jsonPath("$.[*].userImage").value(hasItem(DEFAULT_USER_IMAGE.toString())))
             .andExpect(jsonPath("$.[*].activate").value(hasItem(DEFAULT_ACTIVATE.booleanValue())));
     }
 

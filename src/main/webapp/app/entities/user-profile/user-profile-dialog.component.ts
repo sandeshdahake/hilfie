@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { UserProfile } from './user-profile.model';
 import { UserProfilePopupService } from './user-profile-popup.service';
@@ -31,13 +31,11 @@ export class UserProfileDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private userProfileService: UserProfileService,
         private userService: UserService,
         private schoolService: SchoolService,
         private classroomService: ClassroomService,
-        private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
     }
@@ -52,26 +50,20 @@ export class UserProfileDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<Classroom[]>) => { this.classrooms = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
-
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
-
-    setFileData(event, entity, field, isImage) {
-        this.dataUtils.setFileData(event, entity, field, isImage);
-    }
-
-    clearInputImage(field: string, fieldContentType: string, idInput: string) {
-        this.dataUtils.clearInputImage(this.userProfile, this.elementRef, field, fieldContentType, idInput);
-    }
-
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
+    profileHandler(event) {
+        for(let file of event.files) {
+            this.userProfileService.sendFileToServer(file).subscribe((url: string) => {
+                this.userProfile.userImage = url;
+                });
+            }
+    }
+profileHandler1(){
+    alert("sandesh");
+}
     save() {
         this.isSaving = true;
         if (this.userProfile.id !== undefined) {
@@ -93,7 +85,6 @@ export class UserProfileDialogComponent implements OnInit {
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
-
     private onSaveError() {
         this.isSaving = false;
     }

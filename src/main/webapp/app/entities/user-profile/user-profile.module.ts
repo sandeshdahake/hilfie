@@ -1,8 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 import { HilfieSharedModule } from '../../shared';
 import { HilfieAdminModule } from '../../admin/admin.module';
+import {FileUploadModule} from 'primeng/fileupload';
+
 import {
     UserProfileService,
     UserProfilePopupService,
@@ -25,6 +26,7 @@ const ENTITY_STATES = [
     imports: [
         HilfieSharedModule,
         HilfieAdminModule,
+        FileUploadModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
@@ -44,7 +46,7 @@ const ENTITY_STATES = [
     ],
     providers: [
         UserProfileService,
-        UserProfilePopupService
+        UserProfilePopupService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

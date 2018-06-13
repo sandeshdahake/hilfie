@@ -6,7 +6,7 @@
             "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "id"
         },
@@ -19,7 +19,6 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
             "relationshipName": "classroom",
             "otherEntityName": "classroom",
             "otherEntityField": "className"
@@ -40,8 +39,7 @@
         },
         {
             "fieldName": "userImage",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "image"
+            "fieldType": "String"
         },
         {
             "fieldName": "activate",

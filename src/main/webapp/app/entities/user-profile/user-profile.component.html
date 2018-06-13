@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span>User Profiles</span>
-        <button class="btn btn-primary float-right jh-create-entity " [routerLink]="['/', { outlets: { popup: ['user-profile-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-user-profile" [routerLink]="['/', { outlets: { popup: ['user-profile-new'] } }]">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down" >
             Create new User Profile
@@ -35,7 +35,7 @@
             <th jhiSortBy="userBloodGroup"><span>User Blood Group</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="userImage"><span>User Image</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="activate"><span>Activate</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user.id"><span>User</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="school.schoolName"><span>School</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="classroom.className"><span>Classroom</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -47,15 +47,10 @@
                 <td>{{userProfile.userPhone}}</td>
                 <td>{{userProfile.userDob | date:'mediumDate'}}</td>
                 <td>{{userProfile.userBloodGroup}}</td>
-                <td>
-                    <a *ngIf="userProfile.userImage" (click)="openFile(userProfile.userImageContentType, userProfile.userImage)">
-                        <img [src]="'data:' + userProfile.userImageContentType + ';base64,' + userProfile.userImage" style="max-height: 30px;" alt="userProfile image"/>
-                    </a>
-                    <span *ngIf="userProfile.userImage">{{userProfile.userImageContentType}}, {{byteSize(userProfile.userImage)}}</span>
-                </td>
+                <td>{{userProfile.userImage}}</td>
                 <td>{{userProfile.activate}}</td>
                 <td>
-                    {{userProfile.user?.id}}
+                    {{userProfile.user?.login}}
                 </td>
                 <td>
                     <div *ngIf="userProfile.school">

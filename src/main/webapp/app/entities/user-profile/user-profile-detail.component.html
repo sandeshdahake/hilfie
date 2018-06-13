@@ -18,12 +18,7 @@
         </dd>
         <dt><span>User Image</span></dt>
         <dd>
-            <div *ngIf="userProfile.userImage">
-                <a (click)="openFile(userProfile.userImageContentType, userProfile.userImage)">
-                    <img [src]="'data:' + userProfile.userImageContentType + ';base64,' + userProfile.userImage" style="max-width: 100%;" alt="userProfile image"/>
-                </a>
-                {{userProfile.userImageContentType}}, {{byteSize(userProfile.userImage)}}
-            </div>
+            <span>{{userProfile.userImage}}</span>
         </dd>
         <dt><span>Activate</span></dt>
         <dd>
@@ -31,7 +26,7 @@
         </dd>
         <dt><span>User</span></dt>
         <dd>
-            {{userProfile.user?.id}}
+            {{userProfile.user?.login}}
         </dd>
         <dt><span>School</span></dt>
         <dd>
