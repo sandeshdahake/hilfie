@@ -80,12 +80,12 @@
                  accept="image/*" maxFileSize="1000000" (onUpload)="imgUpload.clear()">      
             </p-fileUpload>
             <label class="form-control-label" for="field_userImage">User Image</label>
-            <img  class="form-control" name="userImage" id="field_userImage"
+            <img  class="img-rounded" width="100" height="100" name="userImage" id="field_userImage"
                 src="{{userProfile.userImage}}" />
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_activate">Activate</label>
-            <input type="checkbox" class="form-control" name="activate" id="field_activate"
+            <input type="checkbox" ng-init="userProfile.activate = true" class="form-control" name="activate" id="field_activate"
                 [(ngModel)]="userProfile.activate" />
             <div [hidden]="!(editForm.controls.activate?.dirty && editForm.controls.activate?.invalid)">
                 <small class="form-text text-danger"

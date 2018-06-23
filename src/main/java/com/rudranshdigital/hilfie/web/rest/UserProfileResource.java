@@ -1,6 +1,7 @@
 package com.rudranshdigital.hilfie.web.rest;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.codahale.metrics.annotation.Timed;
 import com.rudranshdigital.hilfie.config.ApplicationProperties;
@@ -173,7 +174,10 @@ public class UserProfileResource {
         log.debug("REST request to upload image : {}", file);
         String fileName = Math.random()+ file.getName();
         Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
-        Map uploadResult = cloudinary.uploader().upload(new File(applicationProperties.getImageUploadPath()+fileName), ObjectUtils.emptyMap());
+        Map uploadResult = cloudinary.uploader().upload(new File(applicationProperties.getImageUploadPath()+fileName), ObjectUtils.asMap(
+
+            "folder", "hilfie/profile/"
+        ));
         // Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
 
         String imageUrl = (String)uploadResult.get("url");
