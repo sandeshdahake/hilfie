@@ -1,6 +1,9 @@
 package com.rudranshdigital.hilfie.repository;
 
+import com.rudranshdigital.hilfie.domain.School;
 import com.rudranshdigital.hilfie.domain.UserProfile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -14,4 +17,6 @@ import org.springframework.data.jpa.repository.*;
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
 
     UserProfile findByUserLogin(String login);
+
+    Page<UserProfile> findAllBySchool(Pageable pageable, School school);
 }

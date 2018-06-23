@@ -3,8 +3,10 @@ package com.rudranshdigital.hilfie.service;
 import com.rudranshdigital.hilfie.config.CacheConfiguration;
 import com.rudranshdigital.hilfie.domain.Authority;
 import com.rudranshdigital.hilfie.domain.User;
+import com.rudranshdigital.hilfie.domain.UserProfile;
 import com.rudranshdigital.hilfie.repository.AuthorityRepository;
 import com.rudranshdigital.hilfie.config.Constants;
+import com.rudranshdigital.hilfie.repository.UserProfileRepository;
 import com.rudranshdigital.hilfie.repository.UserRepository;
 import com.rudranshdigital.hilfie.repository.search.UserSearchRepository;
 import com.rudranshdigital.hilfie.security.AuthoritiesConstants;
@@ -46,16 +48,16 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    private final UserProfileService userProfileService;
+    private final UserProfileRepository userProfileRepository;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository,
-                       AuthorityRepository authorityRepository, CacheManager cacheManager, UserProfileService userProfileService) {
+                       AuthorityRepository authorityRepository, CacheManager cacheManager, UserProfileRepository userProfileRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
-        this.userProfileService  =userProfileService;
+        this.userProfileRepository  =userProfileRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -217,7 +219,8 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
-            userProfileService.delete(user.getId());
+            UserProfile userProfile = userProfileRepository.findByUserLogin(user.getLogin());
+            userProfileRepository.delete(userProfile.getId());
             userRepository.delete(user);
             userSearchRepository.delete(user);
             cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());

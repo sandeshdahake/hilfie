@@ -51,6 +51,7 @@ public class UserProfileResource {
 
     private final UserProfileService userProfileService;
 
+
     public UserProfileResource(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
     }

@@ -1,8 +1,10 @@
 package com.rudranshdigital.hilfie.service;
 
+import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.domain.UserProfile;
 import com.rudranshdigital.hilfie.repository.UserProfileRepository;
 import com.rudranshdigital.hilfie.repository.search.UserProfileSearchRepository;
+import com.rudranshdigital.hilfie.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -25,10 +29,14 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     private final UserProfileSearchRepository userProfileSearchRepository;
+    private final UserService userService;
 
-    public UserProfileService(UserProfileRepository userProfileRepository, UserProfileSearchRepository userProfileSearchRepository) {
+    public UserProfileService(UserProfileRepository userProfileRepository, UserProfileSearchRepository userProfileSearchRepository,
+    UserService userService) {
         this.userProfileRepository = userProfileRepository;
         this.userProfileSearchRepository = userProfileSearchRepository;
+        this.userService = userService;
+
     }
 
     /**
@@ -53,7 +61,15 @@ public class UserProfileService {
     @Transactional(readOnly = true)
     public Page<UserProfile> findAll(Pageable pageable) {
         log.debug("Request to get all UserProfiles");
-        return userProfileRepository.findAll(pageable);
+        Optional<String> currentUser = SecurityUtils.getCurrentUserLogin();
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if(!isUser.isPresent()) {
+            log.error("User is not logged in");
+            return null;
+        }
+        final User user = isUser.get();
+        UserProfile userProfile=findOne(user.getLogin());
+        return userProfileRepository.findAllBySchool(pageable,userProfile.getSchool());
     }
 
     /**

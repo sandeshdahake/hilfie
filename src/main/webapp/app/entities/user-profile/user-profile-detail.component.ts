@@ -15,6 +15,9 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
     userProfile: UserProfile;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    private login:String;
+    account: Account;
+    hideEdit:boolean ;
 
     constructor(
         private eventManager: JhiEventManager,
@@ -26,7 +29,8 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
           //  this.load(params['id']);
-            this.findByLogin(params['login']);
+            this.login = params['login'];
+            this.findByLogin(this.login);
 
         });
         this.registerChangeInUserProfiles();
