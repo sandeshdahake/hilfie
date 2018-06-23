@@ -24,6 +24,7 @@ import {
     FooterComponent,
     ProfileService,
     PageRibbonComponent,
+    SidebarComponent,
     ErrorComponent
 } from './layouts';
 
@@ -44,6 +45,7 @@ import {
         NavbarComponent,
         ErrorComponent,
         PageRibbonComponent,
+        SidebarComponent,
         FooterComponent
     ],
     providers: [

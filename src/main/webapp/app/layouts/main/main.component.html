@@ -1,4 +1,4 @@
-<jhi-page-ribbon></jhi-page-ribbon>
+<!--<jhi-page-ribbon></jhi-page-ribbon>
 <div>
     <router-outlet name="navbar"></router-outlet>
 </div>
@@ -8,4 +8,25 @@
         <router-outlet name="popup"></router-outlet>
     </div>
     <jhi-footer></jhi-footer>
+</div>-->
+
+<div class="wrapper">
+    <div class="sidebar" data-color="danger" data-background-color="red" data-image="../../../content/img/sidebar-1.jpg">
+        <app-sidebar></app-sidebar>
+        <div class="sidebar-background" style="background-image: url(content/img/sidebar-4.jpg)"></div>
+    </div>
+    <div class="main-panel">
+        <div>
+               <router-outlet name="navbar"></router-outlet>
+         </div>
+        <div class="main-content">
+            <div class="container-fluid">
+            <router-outlet></router-outlet>
+        <router-outlet name="popup"></router-outlet>
+            </div>
+        </div>
+    </div>
+    <jhi-footer></jhi-footer>
 </div>
+<div class="main-content">
+    <div class="container-fluid">

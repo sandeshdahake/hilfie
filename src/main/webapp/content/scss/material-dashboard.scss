@@ -1,23 +1,19 @@
-/* after changing this file run 'yarn run webpack:build' */
-$fa-font-path: '~font-awesome/fonts';
+/*!
 
-/***************************
-put Sass variables here:
-eg $input-color: red;
-****************************/
-// Override Boostrap variables
-@import "bootstrap-variables";
-// Import Bootstrap source files from node_modules
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/font-awesome/scss/font-awesome';
-//@import '~primeng/resources/primeng.min.css';
-//@import '~primeng/resources/themes/bootstrap/theme.css';
-@import 'node_modules/primeng/resources/primeng.min';
-@import 'node_modules/primeng/resources/themes/bootstrap/theme';
+ =========================================================
+ * Material Dashboard Angular - v2.1.0
+ =========================================================
 
-@import 'node_modules/quill/dist/quill.core';
-@import 'node_modules/quill/dist/quill.snow';
+ * Product Page: https://www.creative-tim.com/product/material-dashboard-angular2
+ * Copyright 2018 Creative Tim (http://www.creative-tim.com)
 
+ * Designed by www.invisionapp.com Coded by www.creative-tim.com
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
  @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
  @import "core/variables";
@@ -58,5 +54,3 @@ eg $input-color: red;
  @import "core/plugins/perfect-scrollbar";
 
  @import "core/responsive";
-
-/* jhipster-needle-scss-add-vendor JHipster will add new css style */
