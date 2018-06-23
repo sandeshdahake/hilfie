@@ -29,28 +29,20 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userPhone"><span>User Phone</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userDob"><span>User Dob</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userBloodGroup"><span>User Blood Group</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userImage"><span>User Image</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="activate"><span>Activate</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="school.schoolName"><span>School</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="classroom.className"><span>Classroom</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userPhone"><span>User Phone</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userDob"><span>User Dob</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="userBloodGroup"><span>User Blood Group</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="activate"><span>Activate</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let userProfile of userProfiles ;trackBy: trackId">
-                <td><a [routerLink]="['../user-profile', userProfile.id ]">{{userProfile.id}}</a></td>
-                <td>{{userProfile.userPhone}}</td>
-                <td>{{userProfile.userDob | date:'mediumDate'}}</td>
-                <td>{{userProfile.userBloodGroup}}</td>
-                <td>{{userProfile.userImage}}</td>
-                <td>{{userProfile.activate}}</td>
                 <td>
-                    {{userProfile.user?.login}}
+                    <a [routerLink]="['../user-profile', userProfile.id ]">{{userProfile.user?.login}}</a>
                 </td>
                 <td>
                     <div *ngIf="userProfile.school">
@@ -62,6 +54,10 @@
                         <a [routerLink]="['../classroom', userProfile.classroom?.id ]" >{{userProfile.classroom?.className}}</a>
                     </div>
                 </td>
+                <td>{{userProfile.userPhone}}</td>
+                <td>{{userProfile.userDob | date:'mediumDate'}}</td>
+                <td>{{userProfile.userBloodGroup}}</td>
+                <td>{{userProfile.activate}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
