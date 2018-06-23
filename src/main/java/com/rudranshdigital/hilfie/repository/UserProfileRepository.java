@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
 
+    UserProfile findByUserLogin(String login);
 }

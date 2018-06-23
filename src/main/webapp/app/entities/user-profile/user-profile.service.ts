@@ -14,6 +14,7 @@ export type EntityResponseType = HttpResponse<UserProfile>;
 export class UserProfileService {
 
     private resourceUrl =  SERVER_API_URL + 'api/user-profiles';
+    private resourceByLogin = "/login"
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/user-profiles';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
@@ -32,6 +33,11 @@ export class UserProfileService {
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<UserProfile>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    findByLogin(login: String): Observable<EntityResponseType> {
+        return this.http.get<UserProfile>(`${this.resourceUrl}${this.resourceByLogin}/${login}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

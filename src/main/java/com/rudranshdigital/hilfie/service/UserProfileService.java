@@ -92,4 +92,17 @@ public class UserProfileService {
         Page<UserProfile> result = userProfileSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
+
+    /**
+     * Get one userProfile by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public UserProfile findOne(String login) {
+        log.debug("Request to get UserProfile : {}", login);
+        return userProfileRepository.findByUserLogin(login);
+    }
+
 }

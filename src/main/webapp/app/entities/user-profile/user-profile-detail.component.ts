@@ -25,7 +25,9 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+          //  this.load(params['id']);
+            this.findByLogin(params['login']);
+
         });
         this.registerChangeInUserProfiles();
     }
@@ -36,6 +38,14 @@ export class UserProfileDetailComponent implements OnInit, OnDestroy {
                 this.userProfile = userProfileResponse.body;
             });
     }
+
+    findByLogin(login) {
+        this.userProfileService.findByLogin(login)
+            .subscribe((userProfileResponse: HttpResponse<UserProfile>) => {
+                this.userProfile = userProfileResponse.body;
+            });
+    }
+
     previousState() {
         window.history.back();
     }
