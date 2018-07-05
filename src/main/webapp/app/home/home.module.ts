@@ -2,16 +2,19 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { HilfieSharedModule } from '../shared';
-
 import { HOME_ROUTE, HomeComponent } from './';
+import {  AdvComponent } from './adv.component';
+import {CarouselModule} from 'primeng/carousel';
+import {  HomeProfileComponent } from './home.profile.component';
 
 @NgModule({
     imports: [
         HilfieSharedModule,
+        CarouselModule,
         RouterModule.forChild([ HOME_ROUTE ])
     ],
     declarations: [
-        HomeComponent,
+        HomeComponent, AdvComponent,HomeProfileComponent
     ],
     entryComponents: [
     ],

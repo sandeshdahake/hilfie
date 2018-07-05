@@ -1,16 +1,49 @@
-<div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid rounded"></span>
-    </div>
-    <div class="col-md-9">
-        <h1 class="display-4">Welcome to Hilfie !</h1>
-        <p class="lead">This is your homepage</p>
-
+<div class="row ">
+    <div class="col-md-12">
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
-            </div>
+
+                            <div class="row" *ngSwitchCase="true">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2 " *ngIf="account.login" >
+                                    <home-profile-comp  [inputLogin]="account.login"></home-profile-comp>
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="card-text">Ads</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="title h4">Hello {{account.firstName}}  {{account.imageUrl}} why search when you can
+                                            <button class="btn btn-primary btn-round" [routerLink]="['/', { outlets: { popup: ['questions-new'] } }]">
+                                                <span class="fa fa-question"></span>
+                                                <span class="hidden-sm-down" >
+                                                        ask question
+                                                </span>
+                                            </button></p>
+                                        </div>
+                                    </div>
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="card-text">List of questions</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                        <div class="card-body">
+                                            <adv-comp></adv-comp>
+                                        </div>
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="card-text">My Groups</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-1"> </div>
+
+                            </div>
         </div>
     </div>
 </div>
