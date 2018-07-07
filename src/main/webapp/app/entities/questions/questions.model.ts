@@ -5,6 +5,7 @@ export class Questions implements BaseEntity {
         public id?: number,
         public questionlabel?: string,
         public question?: any,
+        public safeQuestion?: any,
         public dateCreated?: any,
         public dateUpdated?: any,
         public isAnonymous?: boolean,

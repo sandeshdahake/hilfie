@@ -6,6 +6,7 @@ import { HOME_ROUTE, HomeComponent } from './';
 import {  AdvComponent } from './adv.component';
 import {CarouselModule} from 'primeng/carousel';
 import {  HomeProfileComponent } from './home.profile.component';
+import {  HomeQuestionsComponent } from './home.question.component';
 
 @NgModule({
     imports: [
@@ -14,7 +15,7 @@ import {  HomeProfileComponent } from './home.profile.component';
         RouterModule.forChild([ HOME_ROUTE ])
     ],
     declarations: [
-        HomeComponent, AdvComponent,HomeProfileComponent
+        HomeComponent, AdvComponent,HomeProfileComponent, HomeQuestionsComponent
     ],
     entryComponents: [
     ],

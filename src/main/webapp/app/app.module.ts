@@ -17,6 +17,8 @@ import { HilfieAdminModule } from './admin/admin.module';
 import { HilfieAccountModule } from './account/account.module';
 import { HilfieEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {
     JhiMainComponent,
@@ -37,6 +39,7 @@ import {
         HilfieAdminModule,
         HilfieAccountModule,
         HilfieEntityModule,
+NgxSpinnerModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

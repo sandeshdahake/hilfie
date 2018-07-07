@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { HilfieSharedModule } from '../../shared';
 import { HilfieAdminModule } from '../../admin/admin.module';
 import {FileUploadModule} from 'primeng/fileupload';
+import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 
 import {
     UserProfileService,
@@ -36,6 +37,7 @@ const ENTITY_STATES = [
         UserProfileDeleteDialogComponent,
         UserProfilePopupComponent,
         UserProfileDeletePopupComponent,
+        ImageCropperComponent
     ],
     entryComponents: [
         UserProfileComponent,

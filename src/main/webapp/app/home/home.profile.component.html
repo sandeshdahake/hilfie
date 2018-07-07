@@ -1,32 +1,20 @@
-<div class="card  jh-card">
-    <div class="cardheader">
-
-    </div>
-    <div class="avatar">
-        <img alt="" src="http://lorempixel.com/100/100/people/9/">
-    </div>
-    <div class="info">
-        <div class="title">
-            <a target="_blank" href="https://scripteden.com/">Script Eden</a>
+<div class='card card-profile jh-card text-center'>
+    <img alt='' class='card-img-top' src='https://unsplash.it/340/160?image=354'>
+    <div class='card-block'>
+        <img alt='' class='card-img-profile' width="150" [src]="userProfile.userImage">
+        <h4 class='card-title'>
+            {{userProfile.user?.firstName}} {{userProfile.user?.lastName}}
+            <small>{{userProfile.user?.login}}</small>
+        </h4>
+        <div class='card-links'>
+            <button class="btn btn-danger btn-round" [routerLink]="['/', { outlets: { popup: 'user-profile/'+ userProfile.id + '/edit'} }]"
+                    replaceUrl="true"
+                    queryParamsHandling="merge">
+                <span class="fa fa-edit"></span>
+                <span class="hidden-sm-down" >
+                                                        Edit Profile
+                                                </span>
+            </button>
         </div>
-        <div class="desc">{{userProfile.user?.firstName}}</div>
-        <div class="desc">Curious developer</div>
-        <div class="desc">Tech geek</div>
-    </div>
-    <div class="bottom">
-        <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
-            <i class="fa fa-twitter"></i>
-        </a>
-        <a class="btn btn-danger btn-sm" rel="publisher"
-           href="https://plus.google.com/+ahmshahnuralam">
-            <i class="fa fa-google-plus"></i>
-        </a>
-        <a class="btn btn-primary btn-sm" rel="publisher"
-           href="https://plus.google.com/shahnuralam">
-            <i class="fa fa-facebook"></i>
-        </a>
-        <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
-            <i class="fa fa-behance"></i>
-        </a>
     </div>
 </div>

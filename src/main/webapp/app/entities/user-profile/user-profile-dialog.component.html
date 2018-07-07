@@ -51,7 +51,7 @@
                 <option [ngValue]="classroomOption.id === userProfile.classroom?.id ? userProfile.classroom : classroomOption" *ngFor="let classroomOption of classrooms; trackBy: trackClassroomById">{{classroomOption.className}}</option>
             </select>
             <input type="text" class="form-control"
-            *jhiHasAnyAuthority="['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE']"
+            *jhiHasAnyAuthority="['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_PARENTS','ROLE_GUARDIAN']"
            value="{{userProfile.classroom?.className}}" readonly />
 
         </div>
@@ -76,12 +76,14 @@
                 [(ngModel)]="userProfile.userBloodGroup" />
         </div>
         <div class="form-group">
-            <p-fileUpload id="imgUpload" name="demo[]" customUpload="true" (uploadHandler)="profileHandler($event)"
-                 accept="image/*" maxFileSize="1000000">
-            </p-fileUpload>
-            <label class="form-control-label" for="field_userImage">User Image</label>
-            <img  class="img-rounded" width="100" height="100" name="userImage" id="field_userImage"
-                src="{{userProfile.userImage}}" />
+            <label class="form-control-label" for="custom-input">open</label>
+            <input id="custom-input" class="form-control" type="file" (change)="fileChangeListener($event)">
+            <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+            <br>
+            <span class="result rounded" *ngIf="data.image" >
+                 <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                <button  class="form-control"  type="button" (click)="profileHandler()"> Upload</button>
+            </span>
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_activate">Activate</label>
