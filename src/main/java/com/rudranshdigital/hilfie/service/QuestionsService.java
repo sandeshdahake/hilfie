@@ -53,7 +53,7 @@ public class QuestionsService {
     @Transactional(readOnly = true)
     public Page<Questions> findAll(Pageable pageable) {
         log.debug("Request to get all Questions");
-        return questionsRepository.findAll(pageable);
+        return questionsRepository.findByOrderByIdDesc(pageable);
     }
 
     /**

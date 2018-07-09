@@ -3,3 +3,4 @@ export const EMAIL_ALREADY_USED_TYPE = PROBLEM_BASE_URL + '/email-already-used';
 export const LOGIN_ALREADY_USED_TYPE = PROBLEM_BASE_URL + '/login-already-used';
 export const EMAIL_NOT_FOUND_TYPE = PROBLEM_BASE_URL + '/email-not-found';
 export const NON_ADMIN_ROLE = "'ROLE_ADMIN','ROLE_STUDENT','ROLE_USER','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PRINCIPAL','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE'";
+export const CLASSROOM_LABEL = "Group";

@@ -34,7 +34,6 @@ export const answersPopupRoute: Routes = [
             authorities: ['ROLE_USER'],
             pageTitle: 'Answers'
         },
-        canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
@@ -44,7 +43,6 @@ export const answersPopupRoute: Routes = [
             authorities: ['ROLE_USER'],
             pageTitle: 'Answers'
         },
-        canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
@@ -55,6 +53,14 @@ export const answersPopupRoute: Routes = [
             pageTitle: 'Answers'
         },
         canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },{
+        path: 'answersByQuestion/:qid/edit',
+        component: AnswersPopupComponent,
+        data: {
+        authorities: ['ROLE_USER'],
+        pageTitle: 'Answers'
+        },
         outlet: 'popup'
     }
 ];

@@ -3,46 +3,40 @@
     <h2><span>Questions</span> {{questions.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Questionlabel</span></dt>
-        <dd>
-            <span>{{questions.questionlabel}}</span>
-        </dd>
-        <dt><span>Question</span></dt>
-        <dd>
-            <span>{{questions.question}}</span>
-        </dd>
-        <dt><span>Date Created</span></dt>
-        <dd>
-            <span>{{questions.dateCreated | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span>Date Updated</span></dt>
-        <dd>
-            <span>{{questions.dateUpdated | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span>Is Anonymous</span></dt>
-        <dd>
-            <span>{{questions.isAnonymous}}</span>
-        </dd>
-        <dt><span>Answer Count</span></dt>
-        <dd>
-            <span>{{questions.answerCount}}</span>
-        </dd>
-        <dt><span>Active</span></dt>
-        <dd>
-            <span>{{questions.active}}</span>
-        </dd>
-        <dt><span>User</span></dt>
-        <dd>
-            {{questions.user?.login}}
-        </dd>
-        <dt><span>Classroom</span></dt>
-        <dd>
-            <div *ngIf="questions.classroom">
-                <a [routerLink]="['/classroom', questions.classroom?.id]">{{questions.classroom?.className}}</a>
+
+    <div class="card bg-dark">
+        <div class="card-body">
+            <div class="card-text">{{questions.user?.firstName}}, {{questions.user?.lastName}} |
+                {{questions.dateCreated | date:'mediumDate'}} | {{questions.classroom?.className}} | {{questions.answerCount}} Answers </div>
+            <h3 class="card-title underline-on-hover" [routerLink]="['../questions', questions.id ]">{{questions.questionlabel}}</h3>
+            <div class="card-text" [innerHtml]="questions.safeQuestion"></div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary float-right jh-create-entity create-answers" [routerLink]="['/', { outlets: { popup: 'answersByQuestion/'+ questions.id+ '/edit' } }]"
+            replaceUrl="true"
+            queryParamsHandling="merge">
+        <span class="fa fa-plus"></span>
+        <span class="hidden-sm-down" >
+            Create new Answers
+            </span>
+    </button>
+
+    <div class="table-responsive" *ngIf="answers">
+        <table class="table table-striped">
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <div *ngFor="let answer of answers ;trackBy: trackId">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <div class="card-text">{{answer.user?.firstName}}, {{answer.user?.lastName}} |
+                            {{answer.dateCreated | date:'mediumDate'}} | {{answer.classroom?.className}}</div>
+                        <div class="card-text" [innerHtml]="answer.safeAnswer"></div>
+                    </div>
+                </div>
             </div>
-        </dd>
-    </dl>
+            </tbody>
+        </table>
+    </div>
 
     <button type="submit"
             (click)="previousState()"

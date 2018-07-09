@@ -1,6 +1,7 @@
 package com.rudranshdigital.hilfie.service;
 
 import com.rudranshdigital.hilfie.domain.Answers;
+import com.rudranshdigital.hilfie.domain.Questions;
 import com.rudranshdigital.hilfie.repository.AnswersRepository;
 import com.rudranshdigital.hilfie.repository.search.AnswersSearchRepository;
 import org.slf4j.Logger;
@@ -91,5 +92,11 @@ public class AnswersService {
         log.debug("Request to search for a page of Answers for query {}", query);
         Page<Answers> result = answersSearchRepository.search(queryStringQuery(query), pageable);
         return result;
+    }
+    @Transactional(readOnly = true)
+    public Page<Answers> findByQuestion(Long id, Pageable pageable) {
+        log.debug("Request to get all Answers by question {}", id);
+        return answersRepository.findAllByQuestionsIdOrderByIdDesc(id, pageable);
+
     }
 }
