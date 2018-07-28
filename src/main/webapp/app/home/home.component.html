@@ -4,30 +4,37 @@
     color = "#fb0000"
     type = "pacman"
 ></ngx-spinner>
+<!--
 <div class="row" style="background-image: url(https://res.cloudinary.com/sandeshdahake/image/upload/v1530892679/Background.jpg);">
+-->
+<div class="row">
+
     <div class="col-md-12">
+<!--
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="row" *ngSwitchCase="false">
+                <div {{redirectToRegister()}} />
+            </div>
+        </div>
+-->
         <div [ngSwitch]="isAuthenticated()">
 
                             <div class="row" *ngSwitchCase="true">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2 " *ngIf="account.login" >
                                     <home-profile-comp  [inputLogin]="account.login"></home-profile-comp>
-                                    <div class="card jh-card">
-                                        <div class="card-body">
-                                            <p class="card-text">Ads</p>
-                                        </div>
-                                    </div>
+                                    <adv-comp></adv-comp>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="card jh-card">
                                         <div class="card-body">
-                                            <p class="title h4">Hello {{account.firstName}}  {{account.imageUrl}} why search when you can
+                                            <p class="lead">Hello {{account.firstName}}  {{account.imageUrl}} help yourself by asking question</p>
                                             <button class="btn btn-primary btn-round" [routerLink]="['/', { outlets: { popup: ['questions-new'] } }]">
                                                 <span class="fa fa-question"></span>
                                                 <span class="hidden-sm-down" >
                                                         ask question
                                                 </span>
-                                            </button></p>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="card jh-card">
@@ -37,9 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                        <div class="card-body">
-                                            <adv-comp></adv-comp>
-                                        </div>
+                                    <adv-comp class="card jh-card"></adv-comp>
                                     <div class="card jh-card">
                                         <div class="card-body">
                                             <p class="card-text">My Groups</p>

@@ -2,7 +2,13 @@ package com.rudranshdigital.hilfie.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.rudranshdigital.hilfie.domain.Classroom;
+import com.rudranshdigital.hilfie.domain.School;
+import com.rudranshdigital.hilfie.domain.User;
+import com.rudranshdigital.hilfie.domain.UserProfile;
 import com.rudranshdigital.hilfie.service.ClassroomService;
+import com.rudranshdigital.hilfie.service.SchoolService;
+import com.rudranshdigital.hilfie.service.UserProfileService;
+import com.rudranshdigital.hilfie.service.UserService;
 import com.rudranshdigital.hilfie.web.rest.errors.BadRequestAlertException;
 import com.rudranshdigital.hilfie.web.rest.util.HeaderUtil;
 import com.rudranshdigital.hilfie.web.rest.util.PaginationUtil;
@@ -22,9 +28,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Classroom.
@@ -38,9 +41,15 @@ public class ClassroomResource {
     private static final String ENTITY_NAME = "classroom";
 
     private final ClassroomService classroomService;
+    private final UserService userService;
+    private final SchoolService schoolService;
+    private final UserProfileService userProfileService;
 
-    public ClassroomResource(ClassroomService classroomService) {
+    public ClassroomResource(ClassroomService classroomService, UserService userService, SchoolService schoolService, UserProfileService userProfileService) {
         this.classroomService = classroomService;
+        this.userService = userService;
+        this.schoolService = schoolService;
+        this.userProfileService = userProfileService;
     }
 
     /**
@@ -95,7 +104,15 @@ public class ClassroomResource {
     @Timed
     public ResponseEntity<List<Classroom>> getAllClassrooms(Pageable pageable) {
         log.debug("REST request to get a page of Classrooms");
-        Page<Classroom> page = classroomService.findAll(pageable);
+        User user = userService.getUserWithAuthorities().get();
+        UserProfile userProfile = userProfileService.findOne(user.getLogin());
+        School school = userProfile.getSchool();
+        Page<Classroom> page;
+        if(school == null){
+             page = classroomService.findAll(pageable);
+        }else{
+             page = classroomService.findAllBySchoolName(pageable, school);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/classrooms");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

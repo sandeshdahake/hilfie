@@ -69,7 +69,9 @@ public class UserProfileService {
         }
         final User user = isUser.get();
         UserProfile userProfile=findOne(user.getLogin());
-        return userProfileRepository.findAllBySchool(pageable,userProfile.getSchool());
+       // return userProfileRepository.findAllBySchool(pageable,userProfile.getSchool());
+         return userProfileRepository.findAll(pageable);
+
     }
 
     /**
@@ -112,7 +114,7 @@ public class UserProfileService {
     /**
      * Get one userProfile by id.
      *
-     * @param id the id of the entity
+     * @param login the id of the entity
      * @return the entity
      */
     @Transactional(readOnly = true)

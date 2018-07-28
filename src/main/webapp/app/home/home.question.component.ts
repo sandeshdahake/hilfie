@@ -158,6 +158,8 @@ export class HomeQuestionsComponent implements OnInit, OnDestroy {
     }
 
     public bypassSecurityTrustHtml(html){
+
          return this.sanitizer.bypassSecurityTrustHtml(html)
    }
+
 }

@@ -1,6 +1,5 @@
 package com.rudranshdigital.hilfie.service;
 
-import com.rudranshdigital.hilfie.config.CacheConfiguration;
 import com.rudranshdigital.hilfie.domain.Authority;
 import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.domain.UserProfile;
@@ -8,6 +7,7 @@ import com.rudranshdigital.hilfie.repository.AuthorityRepository;
 import com.rudranshdigital.hilfie.config.Constants;
 import com.rudranshdigital.hilfie.repository.UserProfileRepository;
 import com.rudranshdigital.hilfie.repository.UserRepository;
+import com.rudranshdigital.hilfie.repository.search.UserProfileSearchRepository;
 import com.rudranshdigital.hilfie.repository.search.UserSearchRepository;
 import com.rudranshdigital.hilfie.security.AuthoritiesConstants;
 import com.rudranshdigital.hilfie.security.SecurityUtils;
@@ -49,15 +49,18 @@ public class UserService {
     private final CacheManager cacheManager;
 
     private final UserProfileRepository userProfileRepository;
+    private final SchoolService schoolService;
+
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository,
-                       AuthorityRepository authorityRepository, CacheManager cacheManager, UserProfileRepository userProfileRepository) {
+                       AuthorityRepository authorityRepository, CacheManager cacheManager, UserProfileRepository userProfileRepository, SchoolService schoolService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.userProfileRepository  =userProfileRepository;
+        this.schoolService = schoolService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -67,6 +70,12 @@ public class UserService {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
+                UserProfile userProfile = new UserProfile();
+                userProfile.setActivate(true);
+                userProfile.setUser(user);
+                userProfile.setUserImage(Constants.DEFAULT_IMAGE);
+                userProfile.setSchool(schoolService.findOne(1L));
+                userProfileRepository.save(userProfile);
                 userSearchRepository.save(user);
                 cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
                 cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
@@ -106,6 +115,8 @@ public class UserService {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Authority authorityStudent = authorityRepository.findOne(AuthoritiesConstants.STUDENT);
+
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin());
@@ -121,6 +132,7 @@ public class UserService {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
+        authorities.add(authorityStudent);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
@@ -220,7 +232,8 @@ public class UserService {
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             UserProfile userProfile = userProfileRepository.findByUserLogin(user.getLogin());
-            userProfileRepository.delete(userProfile.getId());
+            if(userProfile != null)
+                userProfileRepository.delete(userProfile.getId());
             userRepository.delete(user);
             userSearchRepository.delete(user);
             cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
@@ -283,6 +296,10 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public SchoolService getSchoolService() {
+        return schoolService;
     }
 
 }
