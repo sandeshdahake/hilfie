@@ -26,6 +26,7 @@ import {
     FooterComponent,
     ProfileService,
     PageRibbonComponent,
+    SidebarComponent,
     ErrorComponent
 } from './layouts';
 
@@ -47,6 +48,7 @@ NgxSpinnerModule
         NavbarComponent,
         ErrorComponent,
         PageRibbonComponent,
+        SidebarComponent,
         FooterComponent
     ],
     providers: [
