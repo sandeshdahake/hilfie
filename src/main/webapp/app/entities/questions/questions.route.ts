@@ -34,7 +34,6 @@ export const questionsPopupRoute: Routes = [
             authorities: ['ROLE_USER'],
             pageTitle: 'Questions'
         },
-        canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {

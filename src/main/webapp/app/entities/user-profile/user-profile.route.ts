@@ -11,7 +11,7 @@ export const userProfileRoute: Routes = [
         path: 'user-profile',
         component: UserProfileComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_INCHARGE','ROLE_PRINCIPAL'],
             pageTitle: 'UserProfiles'
         },
         canActivate: [UserRouteAccessService]
@@ -19,11 +19,19 @@ export const userProfileRoute: Routes = [
         path: 'user-profile/:id',
         component: UserProfileDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN','ROLE_INCHARGE','ROLE_PRINCIPAL'],
             pageTitle: 'UserProfiles'
         },
         canActivate: [UserRouteAccessService]
+    },{
+        path: 'user-profile/login/:login',
+        component: UserProfileDetailComponent,
+        data: {
+            authorities: ['ROLE_STUDENT','ROLE_ANONYMOUS','ROLE_TEACHER','ROLE_PRINCIPAL','ROLE_PARENTS','ROLE_GUARDIAN','ROLE_INCHARGE'],
+            pageTitle: 'UserProfiles'
+        },
     }
+
 ];
 
 export const userProfilePopupRoute: Routes = [

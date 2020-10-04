@@ -1,16 +1,60 @@
+<ngx-spinner
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "medium"
+    color = "#fb0000"
+    type = "pacman"
+></ngx-spinner>
+<!--
+<div class="row" style="background-image: url(https://res.cloudinary.com/sandeshdahake/image/upload/v1530892679/Background.jpg);">
+-->
 <div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid rounded"></span>
-    </div>
-    <div class="col-md-9">
-        <h1 class="display-4">Welcome to Hilfie !</h1>
-        <p class="lead">This is your homepage</p>
 
+    <div class="col-md-12">
+<!--
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
+            <div class="row" *ngSwitchCase="false">
+                <div {{redirectToRegister()}} />
             </div>
+        </div>
+-->
+        <div [ngSwitch]="isAuthenticated()">
+
+                            <div class="row" *ngSwitchCase="true">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2 " *ngIf="account.login" >
+                                    <home-profile-comp  [inputLogin]="account.login"></home-profile-comp>
+                                    <adv-comp></adv-comp>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="lead">Hello {{account.firstName}}  {{account.imageUrl}} help yourself by asking question</p>
+                                            <button class="btn btn-primary btn-round" [routerLink]="['/', { outlets: { popup: ['questions-new'] } }]">
+                                                <span class="fa fa-question"></span>
+                                                <span class="hidden-sm-down" >
+                                                        ask question
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <home-questions></home-questions>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <adv-comp class="card jh-card"></adv-comp>
+                                    <div class="card jh-card">
+                                        <div class="card-body">
+                                            <p class="card-text">My Groups</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-1"> </div>
+
+                            </div>
         </div>
     </div>
 </div>

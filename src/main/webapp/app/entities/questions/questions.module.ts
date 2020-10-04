@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from 'primeng/editor';
-
 import { HilfieSharedModule } from '../../shared';
 import { HilfieAdminModule } from '../../admin/admin.module';
 

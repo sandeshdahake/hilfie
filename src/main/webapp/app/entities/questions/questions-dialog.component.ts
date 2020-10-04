@@ -11,7 +11,7 @@ import { QuestionsPopupService } from './questions-popup.service';
 import { QuestionsService } from './questions.service';
 import { User, UserService } from '../../shared';
 import { Classroom, ClassroomService } from '../classroom';
-
+import {CLASSROOM_LABEL} from '../../shared'
 @Component({
     selector: 'jhi-questions-dialog',
     templateUrl: './questions-dialog.component.html'

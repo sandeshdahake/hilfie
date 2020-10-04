@@ -63,7 +63,7 @@ public class Questions implements Serializable {
     @NotNull
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "questions")
+    @OneToMany(mappedBy = "questions", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answers> answers = new HashSet<>();
@@ -143,6 +143,8 @@ public class Questions implements Serializable {
     }
 
     public Integer getAnswerCount() {
+        if(getAnswers() != null)
+            this.answerCount = getAnswers().size();
         return answerCount;
     }
 

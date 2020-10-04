@@ -4,7 +4,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 
 import { ProfileService } from '../profiles/profile.service';
-import { Principal, LoginModalService, LoginService } from '../../shared';
+import { Principal, LoginModalService, LoginService, Account } from '../../shared';
 
 import { VERSION } from '../../app.constants';
 
@@ -29,6 +29,7 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
+    account: Account;
     constructor(
         private loginService: LoginService,
         private principal: Principal,
@@ -58,6 +59,9 @@ export class NavbarComponent implements OnInit {
                            this.mobile_menu_visible = 0;
                          }
                      });
+            this.principal.identity().then((account) => {
+                this.account = account;
+            });
         });
     }
 
@@ -76,7 +80,7 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
-        this.router.navigate(['']);
+        this.router.navigate(['/register']);
     }
 
     toggleNavbar() {
@@ -175,5 +179,8 @@ export class NavbarComponent implements OnInit {
           }
       }
       return 'Dashboard';
+    redirectToProfile(){
+        this.router.navigate(['../user-profile/login',this.account.login]);
+        this.collapseNavbar();
     }
 }

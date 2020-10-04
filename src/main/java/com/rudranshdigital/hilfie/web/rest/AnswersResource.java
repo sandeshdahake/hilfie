@@ -2,7 +2,11 @@ package com.rudranshdigital.hilfie.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.rudranshdigital.hilfie.domain.Answers;
+import com.rudranshdigital.hilfie.domain.Questions;
+import com.rudranshdigital.hilfie.domain.User;
 import com.rudranshdigital.hilfie.service.AnswersService;
+import com.rudranshdigital.hilfie.service.ClassroomService;
+import com.rudranshdigital.hilfie.service.UserService;
 import com.rudranshdigital.hilfie.web.rest.errors.BadRequestAlertException;
 import com.rudranshdigital.hilfie.web.rest.util.HeaderUtil;
 import com.rudranshdigital.hilfie.web.rest.util.PaginationUtil;
@@ -20,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -38,9 +43,14 @@ public class AnswersResource {
     private static final String ENTITY_NAME = "answers";
 
     private final AnswersService answersService;
+    private final UserService userService;
+    private final ClassroomService classroomService;
 
-    public AnswersResource(AnswersService answersService) {
+
+    public AnswersResource(AnswersService answersService, UserService userService, ClassroomService classroomService) {
         this.answersService = answersService;
+        this.userService = userService;
+        this.classroomService = classroomService;
     }
 
     /**
@@ -52,12 +62,21 @@ public class AnswersResource {
      */
     @PostMapping("/answers")
     @Timed
-    public ResponseEntity<Answers> createAnswers(@Valid @RequestBody Answers answers) throws URISyntaxException {
+    public ResponseEntity<Answers> createAnswers(@RequestBody Answers answers) throws URISyntaxException {
         log.debug("REST request to save Answers : {}", answers);
         if (answers.getId() != null) {
             throw new BadRequestAlertException("A new answers cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        answers.setActive(true);
+        answers.setDateCreated(LocalDate.now());
+        answers.setDateUpdated(LocalDate.now());
+        answers.setIsAnonymous(false);
+        User user = userService.getUserWithAuthorities().get();
+        answers.setUser(user);
+        answers.setClassroom(answers.getQuestions().getClassroom());
         Answers result = answersService.save(answers);
+
+
         return ResponseEntity.created(new URI("/api/answers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -142,6 +161,16 @@ public class AnswersResource {
         log.debug("REST request to search for a page of Answers for query {}", query);
         Page<Answers> page = answersService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/answers");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/answers/question/{id}")
+    @Timed
+    public ResponseEntity<List<Answers>> findByQuestion(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to find for a page of Answers for question {}", id);
+        Page<Answers> page = answersService.findByQuestion(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/answers/question");
+
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
