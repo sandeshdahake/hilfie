@@ -41,6 +41,12 @@ export class AnswersService {
             .map((res: HttpResponse<Answers[]>) => this.convertArrayResponse(res));
     }
 
+    findByQuestion(req?: any):Observable<HttpResponse<Answers[]>> {
+        const options = createRequestOption(req);
+        return this.http.get<Answers[]>(`${this.resourceUrl}/question/${req.id}`, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Answers[]>) => this.convertArrayResponse(res));
+    }
+
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }

@@ -51,6 +51,7 @@ public class UserProfileResource {
 
     private final UserProfileService userProfileService;
 
+
     public UserProfileResource(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
     }
@@ -182,6 +183,20 @@ public class UserProfileResource {
 
         String imageUrl = (String)uploadResult.get("url");
         return ResponseEntity.ok().body(imageUrl);
+    }
+
+    /**
+     * GET  /user-profiles/:login : get the "login" userProfile.
+     *
+     * @param login the id of the userProfile to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the userProfile, or with status 404 (Not Found)
+     */
+    @GetMapping("/user-profiles/login/{login}")
+    @Timed
+    public ResponseEntity<UserProfile> getUserProfile(@PathVariable String login) {
+        log.debug("REST request to get UserProfile : {}", login);
+        UserProfile userProfile = userProfileService.findOne(login);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userProfile));
     }
 
 }

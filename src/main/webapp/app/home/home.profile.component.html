@@ -1,0 +1,20 @@
+<div class='card card-profile jh-card text-center'>
+    <img alt='' class='card-img-top' src='https://unsplash.it/340/160?image=354'>
+    <div class='card-block'>
+        <img alt='' class='card-img-profile' width="150" [src]="userProfile.userImage">
+        <h4 class='card-title'>
+            {{userProfile.user?.firstName}} {{userProfile.user?.lastName}}
+            <small>{{userProfile.user?.login}}</small>
+        </h4>
+        <div class='card-links'>
+            <button class="btn btn-danger btn-round" [routerLink]="['/', { outlets: { popup: 'user-profile/'+ userProfile.id + '/edit'} }]"
+                    replaceUrl="true"
+                    queryParamsHandling="merge">
+                <span class="fa fa-edit"></span>
+                <span class="hidden-sm-down" >
+                                                        Edit Profile
+                                                </span>
+            </button>
+        </div>
+    </div>
+</div>

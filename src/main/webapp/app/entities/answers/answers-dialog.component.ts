@@ -12,24 +12,26 @@ import { AnswersService } from './answers.service';
 import { User, UserService } from '../../shared';
 import { Classroom, ClassroomService } from '../classroom';
 import { Questions, QuestionsService } from '../questions';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'jhi-answers-dialog',
     templateUrl: './answers-dialog.component.html'
 })
 export class AnswersDialogComponent implements OnInit {
-
+    qid:number;
     answers: Answers;
     isSaving: boolean;
-
     users: User[];
-
     classrooms: Classroom[];
-
-    questions: Questions[];
+    editor: any;
+    returnedURL: any;
+    questions: Questions;
     dateCreatedDp: any;
     dateUpdatedDp: any;
 
+    private subscription: Subscription;
+    private eventSubscriber: Subscription;
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
@@ -38,18 +40,28 @@ export class AnswersDialogComponent implements OnInit {
         private userService: UserService,
         private classroomService: ClassroomService,
         private questionsService: QuestionsService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private route: ActivatedRoute
+
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+/*
+        this.subscription = this.route.params.subscribe((params) => {
+
+            alert(this.qid);
+            this.qid = this.qid;
+        });
+*/
+        alert(this.qid);
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.classroomService.query()
             .subscribe((res: HttpResponse<Classroom[]>) => { this.classrooms = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.questionsService.query()
-            .subscribe((res: HttpResponse<Questions[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.questionsService.find(this.qid)
+            .subscribe((res: HttpResponse<Questions>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -74,6 +86,7 @@ export class AnswersDialogComponent implements OnInit {
             this.subscribeToSaveResponse(
                 this.answersService.update(this.answers));
         } else {
+            this.answers.questions = this.questions;
             this.subscribeToSaveResponse(
                 this.answersService.create(this.answers));
         }
@@ -109,6 +122,39 @@ export class AnswersDialogComponent implements OnInit {
     trackQuestionsById(index: number, item: Questions) {
         return item.id;
     }
+
+     editorCreated(event) {
+        const toolbar = event.editor.getModule('toolbar');
+        toolbar.addHandler('image', this.imageHandler.bind(this));
+        this.editor = event.editor;
+        this.editor.addContainer('ql-video');
+    }
+
+    imageHandler() {
+      const Imageinput = document.createElement('input');
+      Imageinput.setAttribute('type', 'file');
+      Imageinput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+      Imageinput.classList.add('ql-image');
+
+      Imageinput.addEventListener('change', () =>  {
+        const file = Imageinput.files[0];
+        if (Imageinput.files != null && Imageinput.files[0] != null) {
+            this.questionsService.sendFileToServer(file).subscribe((url: String) => {
+            this.returnedURL = url;
+            this.pushImageToEditor();
+            });
+        }
+    });
+
+      Imageinput.click();
+    }
+
+    pushImageToEditor() {
+      const range = this.editor.getSelection(true);
+      const index = range.index + range.length;
+      this.editor.insertEmbed(range.index, 'image', this.returnedURL);
+    }
+
 }
 
 @Component({
@@ -125,14 +171,17 @@ export class AnswersPopupComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+
         this.routeSub = this.route.params.subscribe((params) => {
+
             if ( params['id'] ) {
                 this.answersPopupService
-                    .open(AnswersDialogComponent as Component, params['id']);
+                    .open(AnswersDialogComponent as Component, params['id'],params['qid']);
             } else {
-                this.answersPopupService
-                    .open(AnswersDialogComponent as Component);
+                    this.answersPopupService
+                    .open(AnswersDialogComponent as Component, null ,params['qid']);
             }
+
         });
     }
 

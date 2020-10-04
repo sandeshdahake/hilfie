@@ -7,6 +7,9 @@ import com.rudranshdigital.hilfie.domain.School;
 import com.rudranshdigital.hilfie.repository.ClassroomRepository;
 import com.rudranshdigital.hilfie.service.ClassroomService;
 import com.rudranshdigital.hilfie.repository.search.ClassroomSearchRepository;
+import com.rudranshdigital.hilfie.service.SchoolService;
+import com.rudranshdigital.hilfie.service.UserProfileService;
+import com.rudranshdigital.hilfie.service.UserService;
 import com.rudranshdigital.hilfie.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -71,11 +74,14 @@ public class ClassroomResourceIntTest {
     private MockMvc restClassroomMockMvc;
 
     private Classroom classroom;
+    private UserService userService;
+    private SchoolService schoolService;
+    private UserProfileService userProfileService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ClassroomResource classroomResource = new ClassroomResource(classroomService);
+        final ClassroomResource classroomResource = new ClassroomResource(classroomService, userService, schoolService, userProfileService);
         this.restClassroomMockMvc = MockMvcBuilders.standaloneSetup(classroomResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

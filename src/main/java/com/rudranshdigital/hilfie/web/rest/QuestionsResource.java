@@ -34,6 +34,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -93,7 +94,12 @@ public class QuestionsResource {
             throw new BadRequestAlertException("A new questions cannot already have an ID", ENTITY_NAME, "idexists");
         }
         User user = userService.getUserWithAuthorities().get();
-
+        questions.setUser(user);
+        questions.setDateCreated(LocalDate.now());
+        questions.setDateUpdated(LocalDate.now());
+        questions.setActive(true);
+        questions.setAnswerCount(0);
+        questions.setIsAnonymous(false);
 /*
         questions.setUser();
         questions.setClassroom();
@@ -120,6 +126,7 @@ public class QuestionsResource {
         if (questions.getId() == null) {
             return createQuestions(questions);
         }
+        questions.setDateUpdated(LocalDate.now());
         Questions result = questionsService.save(questions);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questions.getId().toString()))

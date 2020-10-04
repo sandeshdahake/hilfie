@@ -1,6 +1,7 @@
 package com.rudranshdigital.hilfie.service;
 
 import com.rudranshdigital.hilfie.domain.Classroom;
+import com.rudranshdigital.hilfie.domain.School;
 import com.rudranshdigital.hilfie.repository.ClassroomRepository;
 import com.rudranshdigital.hilfie.repository.search.ClassroomSearchRepository;
 import org.slf4j.Logger;
@@ -91,5 +92,10 @@ public class ClassroomService {
         log.debug("Request to search for a page of Classrooms for query {}", query);
         Page<Classroom> result = classroomSearchRepository.search(queryStringQuery(query), pageable);
         return result;
+    }
+
+    public Page<Classroom> findAllBySchoolName(Pageable pageable, School school) {
+        log.debug("Request to find all Classroom by school: {}", school);
+        return classroomRepository.findAllBySchoolName(pageable, school);
     }
 }

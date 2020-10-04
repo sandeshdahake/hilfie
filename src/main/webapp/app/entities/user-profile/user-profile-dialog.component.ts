@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
@@ -12,6 +12,8 @@ import { UserProfileService } from './user-profile.service';
 import { User, UserService } from '../../shared';
 import { School, SchoolService } from '../school';
 import { Classroom, ClassroomService } from '../classroom';
+import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'jhi-user-profile-dialog',
@@ -28,7 +30,11 @@ export class UserProfileDialogComponent implements OnInit {
 
     classrooms: Classroom[];
     userDobDp: any;
-
+    cropperSettings: CropperSettings;
+    data:any;
+    @ViewChild('cropper', undefined)
+    cropper:ImageCropperComponent;
+    file:File;
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
@@ -36,8 +42,39 @@ export class UserProfileDialogComponent implements OnInit {
         private userService: UserService,
         private schoolService: SchoolService,
         private classroomService: ClassroomService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private spinner: NgxSpinnerService
     ) {
+        this.cropperSettings = new CropperSettings();
+
+            this.cropperSettings.noFileInput = true;
+      this.cropperSettings.canvasWidth = 500;
+      this.cropperSettings.canvasHeight = 300;
+
+      this.cropperSettings.minWidth = 10;
+      this.cropperSettings.minHeight = 10;
+
+      this.cropperSettings.rounded = true;
+      this.cropperSettings.keepAspect = true;
+
+      this.cropperSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+      this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+
+        this.data = {};
+
+    }
+
+    fileChangeListener($event) {
+        var image:any = new Image();
+        var file:File = $event.target.files[0];
+        var myReader:FileReader = new FileReader();
+        var that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image, null);
+        };
+       myReader.readAsDataURL(file);
+       this.file = file;
     }
 
     ngOnInit() {
@@ -54,12 +91,13 @@ export class UserProfileDialogComponent implements OnInit {
         this.activeModal.dismiss('cancel');
     }
 
-    profileHandler(event) {
-        for(let file of event.files) {
-            this.userProfileService.sendFileToServer(file).subscribe((url: string) => {
+    profileHandler() {
+            this.spinner.show()
+            this.userProfileService.sendFileToServer(this.file).subscribe((url: string) => {
                 this.userProfile.userImage = url;
+                 alert(url);
+                 this.spinner.hide()
                 });
-            }
     }
 profileHandler1(){
     alert("sandesh");
