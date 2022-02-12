@@ -23,7 +23,7 @@
     "@angular/router": "5.2.0",
     "@cloudinary/angular-5.x": "^1.0.1",
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
-    "ajv": "6.4.0",
+    "ajv": "6.12.3",
     "arrive": "2.4.1",
     "bootstrap": "4.1.0",
     "bootstrap-material-design": "4.1.1",
